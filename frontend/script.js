@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const API_URL = 'http://localhost:5000/api/public'; // Your backend URL
-    const BASE_URL = 'http://localhost:5000'; // For images
-
+const API_URL = 'https://college-finder-api.onrender.com/api/public';
+const BASE_URL = 'https://college-finder-api.onrender.com';
     // --- Element Selectors ---
     const coursesContainer = document.getElementById('courses-container');
     const citiesContainer = document.getElementById('cities-container');
@@ -214,3 +213,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init();
 });
+

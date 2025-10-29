@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const API_URL = 'http://localhost:5000';
+   const API_URL = 'https://college-finder-api.onrender.com';
     const authHeader = { 'Authorization': `Bearer ${token}` };
 
     // --- Selectors ---
