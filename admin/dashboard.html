@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 800px;">
+        <h1>Admin Dashboard</h1>
+        
+        <section>
+            <h2>Add New Course</h2>
+            <form id="course-form">
+                <div class="form-group">
+                    <label for="course-name">Course Name</label>
+                    <input type="text" id="course-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="course-desc">Description</label>
+                    <textarea id="course-desc"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="course-fees">Average Fees</label>
+                    <input type="text" id="course-fees" placeholder="e.g., $5,000 - $10,000" required>
+                </div>
+                <button type="submit">Add Course</button>
+                <p id="course-message"></p>
+            </form>
+        </section>
+        
+        <hr style="margin: 2rem 0;">
+
+        <section>
+            <h2>Add New City</h2>
+            <form id="city-form">
+                <div class="form-group">
+                    <label for="city-name">City Name</label>
+                    <input type="text" id="city-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="city-desc">Description</label>
+                    <textarea id="city-desc"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="city-image">City Image</label>
+                    <input type="file" id="city-image">
+                </div>
+                <button type="submit">Add City</button>
+                <p id="city-message"></p>
+            </form>
+        </section>
+        
+        <hr style="margin: 2rem 0;">
+
+        <section>
+            <h2>Add New College</h2>
+            <form id="college-form">
+                <div class="form-group">
+                    <label for="college-name">College Name</label>
+                    <input type="text" id="college-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="college-desc">Description</label>
+                    <textarea id="college-desc"></textarea>
+                </div>
+                 <div class="form-group">
+                    <label for="college-image">College Image</label>
+                    <input type="file" id="college-image">
+                </div>
+                <div class="form-group">
+                    <label for="college-fees">Annual Fees</label>
+                    <input type="number" id="college-fees" required>
+                </div>
+                <div class="form-group">
+                    <label for="college-rank">Rank</label>
+                    <input type="number" id="college-rank" required>
+                </div>
+                <div class="form-group">
+                    <label for="college-location">Location (Address)</label>
+                    <input type="text" id="college-location">
+                </div>
+                <div class="form-group">
+                    <label for="college-city">City</label>
+                    <select id="college-city" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="college-courses">Courses (Hold Ctrl/Cmd to select multiple)</label>
+                    <select id="college-courses" multiple required></select>
+                </div>
+                <button type="submit">Add College</button>
+                <p id="college-message"></p>
+            </form>
+        </section>
+
+        <button id="logout-button">Logout</button>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>

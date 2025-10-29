@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Finder</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">CollegeFinder</a>
+            <ul class="nav-links">
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#cities">Cities</a></li>
+                <li><a href="#colleges">Colleges</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search colleges...">
+                <button id="searchButton"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Find Your Future.</h1>
+                <p>"An investment in knowledge pays the best interest." - Benjamin Franklin</p>
+                <a href="#colleges" class="btn">Explore Colleges</a>
+            </div>
+            <div class="hero-image">
+                <img src="studentgraduation.jpg">
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2>About CollegeFinder</h2>
+            <p>We are dedicated to helping you find the perfect college and course to shape your future. Our platform provides comprehensive data on colleges, courses, fees, and rankings to make your decision easier.</p>
+        </div>
+    </section>
+
+    <main class="container page-content">
+        <section id="courses">
+            <h2>Explore Top Courses</h2>
+            <div class="card-container" id="courses-container">
+                </div>
+        </section>
+
+        <section id="cities">
+            <h2>Find Colleges by City</h2>
+            <div class="card-container" id="cities-container">
+                </div>
+        </section>
+
+        <section id="colleges">
+            <h2>All Colleges</h2>
+            <div class="filters">
+                <select id="filter-course">
+                    <option value="">Filter by Course</option>
+                </select>
+                <select id="filter-city">
+                    <option value="">Filter by City</option>
+                </select>
+                <select id="filter-rank">
+                    <option value="">Sort by Rank</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+            <table class="college-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>College Name</th>
+                        <th>City</th>
+                        <th>Courses Available</th>
+                        <th>Fees (Annual)</th>
+                    </tr>
+                </thead>
+                <tbody id="colleges-table-body">
+                    </tbody>
+            </table>
+        </section>
+        
+        <div id="details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div id="modal-body"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>CollegeFinder</h3>
+                    <p>Your one-stop solution for college information. Empowering students to make informed decisions.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#cities">Cities</a></li>
+                        <li><a href="#colleges">Colleges</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CollegeFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
