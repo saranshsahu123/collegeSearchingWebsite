@@ -11,15 +11,22 @@
 
     <nav class="navbar">
         <div class="container">
-            <a href="#" class="logo">CollegeFinder</a>
-            <ul class="nav-links">
-                <li><a href="#courses">Courses</a></li>
-                <li><a href="#cities">Cities</a></li>
-                <li><a href="#colleges">Colleges</a></li>
-            </ul>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search colleges...">
-                <button id="searchButton"><i class="fas fa-search"></i></button>
+            <a href="index.html" class="logo">CollegeFinder</a>
+            
+            <button class="nav-toggle" aria-label="toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+            
+            <div class="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#cities">Cities</a></li>
+                    <li><a href="#colleges">Colleges</a></li>
+                </ul>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search colleges...">
+                    <button id="searchButton" aria-label="Search"><i class="fas fa-search"></i></button>
+                </div>
             </div>
         </div>
     </nav>
@@ -32,7 +39,7 @@
                 <a href="#colleges" class="btn">Explore Colleges</a>
             </div>
             <div class="hero-image">
-                <img src="studentgraduation.jpg">
+                <img src="studentgraduation.jpg" alt="Happy students in graduation caps celebrating">
             </div>
         </div>
     </header>
@@ -60,42 +67,37 @@
         <section id="colleges">
             <h2>All Colleges</h2>
             <div class="filters">
-                <select id="filter-course">
+                <select id="filter-course" aria-label="Filter by course">
                     <option value="">Filter by Course</option>
                 </select>
-                <select id="filter-city">
+                <select id="filter-city" aria-label="Filter by city">
                     <option value="">Filter by City</option>
                 </select>
-                <select id="filter-rank">
+                <select id="filter-rank" aria-label="Sort by rank">
                     <option value="">Sort by Rank</option>
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                 </select>
             </div>
-            <table class="college-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>College Name</th>
-                        <th>City</th>
-                        <th>Courses Available</th>
-                        <th>Fees (Annual)</th>
-                    </tr>
-                </thead>
-                <tbody id="colleges-table-body">
-                    </tbody>
-            </table>
+            
+            <div class="table-container">
+                <table class="college-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>College Name</th>
+                            <th>City</th>
+                            <th>Courses Available</th>
+                            <th>Fees (Annual)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="colleges-table-body">
+                        </tbody>
+                </table>
+            </div>
         </section>
         
-        <div id="details-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <h2 id="modal-title"></h2>
-                <div id="modal-body"></div>
-            </div>
-        </div>
-
-    </main>
+        </main>
 
     <footer class="footer">
         <div class="container">
@@ -114,10 +116,10 @@
                 </div>
                 <div class="footer-social">
                     <h3>Follow Us</h3>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
             <div class="footer-bottom">

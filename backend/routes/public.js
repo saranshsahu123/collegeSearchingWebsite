@@ -90,4 +90,57 @@ router.get('/colleges/by-city/:cityId', async (req, res) => {
     }
 });
 
+// backend/routes/public.js
+
+// ... (all your existing routes)
+
+// @route   GET api/public/colleges/:id
+// @desc    Get a single college by its ID
+router.get('/colleges/:id', async (req, res) => {
+    try {
+        const college = await College.findById(req.params.id)
+            .populate('city', 'name')
+            .populate('courses', 'name');
+        if (!college) return res.status(404).json({ msg: 'College not found' });
+        res.json(college);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET api/public/courses/:id
+// @desc    Get a single course by its ID
+router.get('/courses/:id', async (req, res) => {
+    try {
+        // Also find all colleges that offer this course
+        const course = await Course.findById(req.params.id);
+        const colleges = await College.find({ courses: req.params.id })
+            .populate('city', 'name');
+        
+        if (!course) return res.status(404).json({ msg: 'Course not found' });
+        res.json({ course, colleges });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET api/public/cities/:id
+// @desc    Get a single city by its ID
+router.get('/cities/:id', async (req, res) => {
+    try {
+        // Also find all colleges in this city
+        const city = await City.findById(req.params.id);
+        const colleges = await College.find({ city: req.params.id })
+            .populate('courses', 'name');
+            
+        if (!city) return res.status(404).json({ msg: 'City not found' });
+        res.json({ city, colleges });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

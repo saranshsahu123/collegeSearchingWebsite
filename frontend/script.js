@@ -37,7 +37,7 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
                         <h3>${course.name}</h3>
                         <p>Average Fees: ${course.avgFees}</p>
                         <p>${course.collegeCount} Colleges</p>
-                        <button class="btn view-more" data-type="course" data-id="${course._id}">View Colleges</button>
+                       <a href="course.html?id=${course._id}" class="btn">View More</a>
                     </div>
                 `;
                 coursesContainer.appendChild(courseCard);
@@ -77,7 +77,7 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
                     <div class="card-content">
                         <h3>${city.name}</h3>
                         <p>${city.collegeCount} Colleges</p>
-                        <button class="btn view-more" data-type="city" data-id="${city._id}">View Colleges</button>
+                        <a href="city.html?id=${city._id}" class="btn">View More</a>
                     </div>
                 `;
                 citiesContainer.appendChild(cityCard);
@@ -115,7 +115,7 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${college.rank}</td>
-                    <td>${college.name}</td>
+                    <td><a href="college.html?id=${college._id}" class="table-link">${college.name}</a></td>
                     <td>${college.city.name}</td>
                     <td>${college.courses.map(c => c.name).join(', ')}</td>
                     <td>$${college.fees.toLocaleString()}</td>

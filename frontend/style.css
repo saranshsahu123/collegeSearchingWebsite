@@ -376,3 +376,216 @@ section {
     font-size: 0.9rem;
     color: #ccc;
 }
+
+
+/* --- Details Page Styles (college.html) --- */
+.detail-page-container {
+    margin-top: 100px; /* Adjust for navbar */
+}
+
+.detail-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.detail-header img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.detail-header h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+}
+
+.detail-body {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.detail-info-card {
+    background: var(--light-color);
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.detail-info-card h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.detail-info-card h3 .fas {
+    margin-right: 0.5rem;
+}
+
+.detail-info-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.detail-info-card ul {
+    list-style: none;
+    font-size: 1.1rem;
+}
+
+.detail-info-card ul li {
+    margin-bottom: 0.75rem;
+}
+
+.detail-info-card ul li strong {
+    color: var(--text-color);
+    min-width: 120px;
+    display: inline-block;
+}
+
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.course-list li {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem !important;
+    font-weight: 500;
+}
+
+/* Link style for the table */
+.table-link {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.table-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================ */
+/* --- Responsive Styles --- */
+/* ============================ */
+
+@media (max-width: 768px) {
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    /* --- Navbar (Mobile) --- */
+    .navbar .container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .navbar .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: space-around;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--secondary-color);
+    }
+    
+    .navbar .search-bar {
+        order: 2;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .navbar .search-bar input {
+        width: 100%;
+    }
+
+    /* --- Hero (Mobile) --- */
+    .hero {
+        margin-top: 130px; /* Adjust for taller mobile navbar */
+        padding: 4rem 0 3rem 0;
+    }
+
+    .hero-content {
+        flex-direction: column; /* Stack text and image */
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero-image {
+        margin-top: 2rem;
+    }
+
+    /* --- About (Mobile) --- */
+    .about-section p {
+        font-size: 1rem;
+    }
+
+    /* --- Cards (Mobile) --- */
+    .card-container {
+        grid-template-columns: 1fr; /* Single column grid */
+    }
+
+    /* --- Table (Mobile) --- */
+    .table-container {
+        overflow-x: auto; /* Allows table to scroll horizontally */
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--secondary-color);
+        border-radius: 8px;
+    }
+
+    .college-table {
+        min-width: 600px; /* Force table to be wide */
+    }
+    
+    .college-table th, .college-table td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .filters {
+        flex-direction: column; /* Stack filters */
+    }
+    
+    /* --- Details Page (Mobile) --- */
+    .detail-page-container {
+        margin-top: 150px; /* Adjust for navbar */
+    }
+    
+    .detail-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .detail-info-card {
+        padding: 1.5rem;
+    }
+    
+    .detail-info-card h3 {
+        font-size: 1.25rem;
+    }
+    
+    .detail-info-card p, .detail-info-card ul {
+        font-size: 1rem;
+    }
+
+    /* --- Footer (Mobile) --- */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+}
