@@ -582,6 +582,7 @@ section {
     border-radius: 10px;
     padding: 2rem;
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 .detail-header h1 {
     color: var(--primary-color);
@@ -597,6 +598,11 @@ section {
 }
 .table-link:hover {
     text-decoration: underline;
+}
+
+.detail-header img{
+    width: 80%;
+    height: 40vh;
 }
 
 /* ============================ */
