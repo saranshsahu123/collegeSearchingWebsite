@@ -9,8 +9,8 @@ const app = express();
 // Middleware
 // Define which domains are allowed to make requests
 const allowedOrigins = [
-  'https://college-finder-frontend.onrender.com', // Your frontend site
-  'https://college-finder-admin.onrender.com'   // Your admin site
+  'https://college-finder-frontview.onrender.com', // ✅ CORRECT
+  'https://college-finder-admin.onrender.com'
 ];
 
 app.use(cors({
