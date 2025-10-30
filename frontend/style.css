@@ -345,11 +345,22 @@ section {
 /* ============================ */
 /* --- Card Styles (Gradient Hover) --- */
 /* ============================ */
+/* REPLACE your old .card-container style */
 .card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 2rem;
+    padding: 1rem 0.5rem; /* Add some padding for the glow effect */
+    
+    /* Smooth scroll for JS */
+    scroll-behavior: smooth;
+    
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
+.card-container::-webkit-scrollbar { display: none; }
 
 .card {
     background: var(--light-color);
@@ -358,6 +369,8 @@ section {
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    flex-shrink: 0; /* Stops cards from shrinking */
+    width: 320px;
 }
 
 /* Gradient Hover Effect */
@@ -822,4 +835,62 @@ section {
     white-space: nowrap;
     font-style: italic;
     color: #a0aec0;
+}
+
+/* --- NEW: Card Scroller Wrapper & Buttons --- */
+.card-scroll-wrapper {
+    position: relative;
+    padding: 0 30px; /* Make space for the buttons */
+}
+
+/* We reuse the .scroll-arrow class from the quick bar,
+   but position it differently. */
+.card-scroll-wrapper .scroll-arrow {
+    position: absolute;
+    top: 50%;
+    /* Vertically center and account for button size */
+    transform: translateY(-calc(50% + 1rem)); /* 1rem is half of card-content padding */
+    z-index: 2;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    opacity: 0; /* Hide by default, JS will show them */
+    pointer-events: none; /* Disable by default */
+    transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+/* JS will remove this class when scrolling is possible */
+.card-scroll-wrapper .scroll-arrow:not(.is-hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.card-scroll-wrapper .scroll-arrow:hover {
+    background: var(--light-color);
+    transform: translateY(-calc(50% + 1rem)) scale(1.05);
+}
+
+.card-scroll-wrapper .scroll-arrow.card-scroll-left {
+    left: 10px;
+}
+
+.card-scroll-wrapper .scroll-arrow.card-scroll-right {
+    right: 10px;
+}
+
+/* On mobile, just use touch-scrolling. Hide the buttons. */
+@media (max-width: 768px) {
+     .card-scroll-wrapper .scroll-arrow {
+        display: none; 
+     }
+     .card-scroll-wrapper {
+        padding: 0; /* No space needed for buttons */
+     }
+     /* Add padding to the container itself on mobile */
+     .card-container {
+        padding: 1rem 1.5rem;
+     }
 }

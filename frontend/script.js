@@ -316,3 +316,62 @@ document.addEventListener('DOMContentLoaded', () => {
 // ... (your existing code for that file continues below)
 // const loader = document.getElementById('page-loader');
 // ...
+
+// ... (your existing "Quick Bar Scroller Logic")
+
+    // --- NEW: Card Scroller Logic ---
+    document.querySelectorAll('.card-scroll-wrapper').forEach(wrapper => {
+        const scrollContainer = wrapper.querySelector('.card-container');
+        const scrollLeftBtn = wrapper.querySelector('.card-scroll-left');
+        const scrollRightBtn = wrapper.querySelector('.card-scroll-right');
+
+        if (!scrollContainer || !scrollLeftBtn || !scrollRightBtn) return;
+
+        function checkCardScroll() {
+            // Check if scrolling is possible
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+            
+            // Hide/Show Left Arrow
+            if (scrollContainer.scrollLeft > 0) {
+                scrollLeftBtn.classList.remove('is-hidden');
+            } else {
+                scrollLeftBtn.classList.add('is-hidden');
+            }
+            
+            // Hide/Show Right Arrow (use 1px buffer for precision)
+            if (scrollContainer.scrollLeft < maxScroll - 1) {
+                scrollRightBtn.classList.remove('is-hidden');
+            } else {
+                scrollRightBtn.classList.add('is-hidden');
+            }
+        }
+
+        // Add click events for arrows
+        scrollLeftBtn.addEventListener('click', () => {
+            // Scroll by one card width (320px) + gap (2rem = 32px)
+            scrollContainer.scrollLeft -= 352; 
+        });
+        
+        scrollRightBtn.addEventListener('click', () => {
+            scrollContainer.scrollLeft += 352;
+        });
+
+        // Listen for scrolling to check arrows
+        scrollContainer.addEventListener('scroll', checkCardScroll);
+        // Listen for window resize to check arrows
+        window.addEventListener('resize', checkCardScroll);
+
+        // Use a MutationObserver to re-check when cards are loaded
+        const observer = new MutationObserver(() => {
+            checkCardScroll();
+        });
+        
+        // Watch for new child elements (the cards) being added
+        observer.observe(scrollContainer, { childList: true });
+
+        // Initial check
+        setTimeout(checkCardScroll, 1000); // Delay for content to load
+    });
+    // --- END OF NEW CARD SCROLLER BLOCK ---
+
+// ... (rest of your script.js code)
