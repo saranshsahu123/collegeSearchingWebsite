@@ -84,3 +84,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchCityDetails();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- ADD THIS LOADER LOGIC ---
+    const loader = document.getElementById('page-loader');
+
+    // Hide loader on page load
+    // We hide it in the fetch function, but also hide on error
+    function hideLoader() {
+        loader.style.opacity = '0';
+        setTimeout(() => { loader.style.display = 'none'; }, 300);
+    }
+
+    // Show loader on link clicks
+    document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = link.getAttribute('href');
+            loader.style.display = 'flex';
+            setTimeout(() => { loader.style.opacity = '1'; }, 10);
+            setTimeout(() => { window.location = href; }, 400); // Wait for transition
+        });
+    });
+    // --- END OF LOADER LOGIC ---
+
+    // This is your existing code
+    const API_URL = '...';
+    // ...
+    
+    // --- UPDATE your fetch functions ---
+    // Example for college-detail.js
+    async function fetchCollegeDetails() {
+        try {
+            // ...
+            displayCollege(college);
+        } catch (err) {
+            console.error(err);
+            content.innerHTML = `<h1>Error: ${err.message}</h1>`;
+            hideLoader(); // <-- ADD THIS
+        }
+    }
+
+    function displayCollege(college) {
+        // ...
+        content.innerHTML = `...`;
+        hideLoader(); // <-- ADD THIS
+    }
+
+    fetchCollegeDetails();
+});

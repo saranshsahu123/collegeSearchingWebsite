@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Finder</title>
+    <title>CollegeFinder - Find Your Future</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <div id="page-loader">
+        <div class="spinner"></div>
+    </div>
+
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo">CollegeFinder</a>
-            
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i> CollegeFinder
+            </a>
             <button class="nav-toggle" aria-label="toggle navigation">
                 <span class="hamburger"></span>
             </button>
-            
             <div class="nav-menu">
                 <ul class="nav-links">
                     <li><a href="#courses">Courses</a></li>
@@ -31,41 +38,57 @@
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="container hero-content">
-            <div class="hero-text">
+    <section class="hero-slider">
+        <div class="slide-item fade" style="background-image: url(https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop);">
+            <div class="slide-content">
                 <h1>Find Your Future.</h1>
-                <p>"An investment in knowledge pays the best interest." - Benjamin Franklin</p>
+                <p>"An investment in knowledge pays the best interest."</p>
                 <a href="#colleges" class="btn">Explore Colleges</a>
             </div>
-            <div class="hero-image">
-                <img src="studentgraduation.jpg" alt="Happy students in graduation caps celebrating">
+        </div>
+        <div class="slide-item fade" style="background-image: url(https://images.unsplash.com/photo-1498243691581-b145c365017f?q=80&w=2070&auto=format&fit=crop);">
+            <div class="slide-content">
+                <h1>Discover Your Passion.</h1>
+                <p>Explore thousands of courses from top-ranked universities.</p>
+                <a href="#courses" class="btn">Browse Courses</a>
             </div>
         </div>
-    </header>
+        <div class="slide-item fade" style="background-image: url(https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop);">
+            <div class="slide-content">
+                <h1>Start Your Journey.</h1>
+                <p>Your new campus is waiting for you.</p>
+                <a href="#cities" class="btn">See Cities</a>
+            </div>
+        </div>
+        <div class="slide-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </section>
 
-    <section id="about" class="about-section">
+    <section id="about" class="about-section animate-on-scroll">
         <div class="container">
-            <h2>About CollegeFinder</h2>
+            <h2 class="section-title">About CollegeFinder</h2>
             <p>We are dedicated to helping you find the perfect college and course to shape your future. Our platform provides comprehensive data on colleges, courses, fees, and rankings to make your decision easier.</p>
         </div>
     </section>
 
     <main class="container page-content">
-        <section id="courses">
-            <h2>Explore Top Courses</h2>
+        <section id="courses" class="animate-on-scroll">
+            <h2 class="section-title">Explore Top Courses</h2>
             <div class="card-container" id="courses-container">
                 </div>
         </section>
 
-        <section id="cities">
-            <h2>Find Colleges by City</h2>
+        <section id="cities" class="animate-on-scroll">
+            <h2 class="section-title">Find Colleges by City</h2>
             <div class="card-container" id="cities-container">
                 </div>
         </section>
 
-        <section id="colleges">
-            <h2>All Colleges</h2>
+        <section id="colleges" class="animate-on-scroll">
+            <h2 class="section-title">All Colleges</h2>
             <div class="filters">
                 <select id="filter-course" aria-label="Filter by course">
                     <option value="">Filter by Course</option>
@@ -79,7 +102,6 @@
                     <option value="desc">Descending</option>
                 </select>
             </div>
-            
             <div class="table-container">
                 <table class="college-table">
                     <thead>
@@ -96,30 +118,42 @@
                 </table>
             </div>
         </section>
-        
-        </main>
+    </main>
 
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about">
-                    <h3>CollegeFinder</h3>
+                <div class="footer-col">
+                    <a href="index.html" class="logo footer-logo">
+                        <i class="fas fa-graduation-cap"></i> CollegeFinder
+                    </a>
                     <p>Your one-stop solution for college information. Empowering students to make informed decisions.</p>
                 </div>
-                <div class="footer-links">
+                <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="#courses">Courses</a></li>
                         <li><a href="#cities">Cities</a></li>
                         <li><a href="#colleges">Colleges</a></li>
+                        <li><a href="admin/login.html">Admin Login</a></li>
                     </ul>
                 </div>
-                <div class="footer-social">
+                <div class="footer-col">
+                    <h3>Subscribe</h3>
+                    <p>Get the latest updates and college news.</p>
+                    <form class="subscribe-form">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit" class="btn">Subscribe</button>
+                    </form>
+                </div>
+                <div class="footer-col">
                     <h3>Follow Us</h3>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
