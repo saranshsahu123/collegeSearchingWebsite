@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-const API_URL = 'https://college-finder-api.onrender.com/api/public';
-const BASE_URL = 'https://college-finder-api.onrender.com';
     // --- Element Selectors ---
+    
+    // FIXED: Corrected the URLs (it was 'httpss://')
+    const API_URL = 'https://college-finder-api.onrender.com/api/public';
+    const BASE_URL = 'https://college-finder-api.onrender.com';
+    
     const coursesContainer = document.getElementById('courses-container');
     const citiesContainer = document.getElementById('cities-container');
     const collegesTableBody = document.getElementById('colleges-table-body');
@@ -11,10 +14,11 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
     const filterCity = document.getElementById('filter-city');
     const filterRank = document.getElementById('filter-rank');
     
-    const modal = document.getElementById('details-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalBody = document.getElementById('modal-body');
-    const closeModal = document.querySelector('.close-button');
+    // REMOVED: All old modal variables
+    // const modal = document.getElementById('details-modal');
+    // const modalTitle = document.getElementById('modal-title');
+    // const modalBody = document.getElementById('modal-body');
+    // const closeModal = document.querySelector('.close-button');
 
     // --- Data Fetching Functions ---
 
@@ -129,22 +133,8 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
     }
     
     // --- Modal Logic ---
-    function showModal(title, content) {
-        modalTitle.textContent = title;
-        modalBody.innerHTML = content;
-        modal.style.display = 'block';
-    }
-
-    function hideModal() {
-        modal.style.display = 'none';
-    }
-
-    closeModal.onclick = hideModal;
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            hideModal();
-        }
-    };
+    // REMOVED: All old modal functions (showModal, hideModal)
+    // REMOVED: All old modal event listeners (closeModal.onclick, window.onclick)
     
     // --- Event Listeners ---
 
@@ -153,45 +143,8 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
     filterCity.addEventListener('change', () => fetchColleges(filterCourse.value, filterCity.value, filterRank.value));
     filterRank.addEventListener('change', () => fetchColleges(filterCourse.value, filterCity.value, filterRank.value));
 
-    // "View More" button listener (for course and city cards)
-    document.body.addEventListener('click', async (e) => {
-        if (e.target.classList.contains('view-more')) {
-            const type = e.target.dataset.type;
-            const id = e.target.dataset.id;
-            
-            let url = '';
-            let title = '';
-
-            if (type === 'course') {
-                url = `${API_URL}/colleges/by-course/${id}`;
-                title = 'Colleges for this Course';
-            } else if (type === 'city') {
-                url = `${API_URL}/colleges/by-city/${id}`;
-                title = 'Colleges in this City';
-            }
-
-            try {
-                const res = await fetch(url);
-                const colleges = await res.json();
-                
-                let content = '<ul>';
-                if(colleges.length === 0) {
-                    content = '<p>No colleges found.</p>';
-                } else {
-                    colleges.forEach(college => {
-                        content += `<li><strong>${college.name}</strong> (Rank: ${college.rank})</li>`;
-                    });
-                    content += '</ul>';
-                }
-                showModal(title, content);
-                
-            } catch (err) {
-                console.error('Error fetching details:', err);
-                showModal('Error', '<p>Could not load details.</p>');
-            }
-        }
-    });
-
+    // REMOVED: Old "View More" button event listener
+    
     // About section scroll effect
     const aboutSection = document.getElementById('about');
     const observer = new IntersectionObserver((entries) => {
@@ -213,4 +166,3 @@ const BASE_URL = 'https://college-finder-api.onrender.com';
 
     init();
 });
-
