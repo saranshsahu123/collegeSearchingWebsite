@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const loader = document.getElementById('page-loader');
+    const courseQuickBar = document.getElementById('course-quick-bar-links');
 
     // --- Page Loader Logic ---
     if (loader) {
@@ -129,11 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.value = course._id;
                 option.textContent = course.name;
                 filterCourse.appendChild(option);
+
+                // --- ADD THIS ---
+    // Add the same course to the quick bar
+    const quickLink = document.createElement('a');
+    quickLink.href = `course.html?id=${course._id}`;
+    quickLink.className = 'quick-link';
+    quickLink.textContent = course.name;
+    courseQuickBar.appendChild(quickLink);
+    // --- END OF ADD ---
+    
             });
-        } catch (err) {
-            console.error('Error fetching courses:', err);
-            coursesContainer.innerHTML = '<p>Error loading courses.</p>';
-        }
+
+            coursesContainer.innerHTML = '';
+        filterCourse.innerHTML = '<option value="">Filter by Course</option>';
+        courseQuickBar.innerHTML = ''; // <-- ADD THIS LINE to clear "Loading..."
+
+        }  catch (err) {
+    console.error('Error fetching courses:', err);
+    coursesContainer.innerHTML = '<p>Error loading courses.</p>';
+    // --- ADD THIS LINE ---
+    courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
+}
     }
 
     // Fetch and display all cities

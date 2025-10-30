@@ -697,3 +697,58 @@ section {
         font-size: 2.2rem;
     }
 }
+
+/* ============================ */
+/* --- Course Quick Bar --- */
+/* ============================ */
+.course-quick-bar {
+    background: #1f2937; /* Dark background */
+    color: var(--light-color);
+    padding: 0.75rem 0;
+    position: fixed;
+    /* This value is your main navbar's height. Adjust if needed. */
+    top: 68px; 
+    width: 100%;
+    z-index: 999; /* Below navbar, above everything else */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.course-quick-bar .container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevents wrapping */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    gap: 1.75rem;
+    padding-bottom: 5px; /* Space for scrollbar if it appears */
+}
+
+/* Hides the scrollbar for a cleaner look */
+.course-quick-bar .container::-webkit-scrollbar {
+    height: 3px;
+}
+.course-quick-bar .container::-webkit-scrollbar-thumb {
+    background: var(--primary-light);
+    border-radius: 10px;
+}
+.course-quick-bar .container::-webkit-scrollbar-track {
+    background: #4a5568;
+}
+
+.quick-link {
+    white-space: nowrap; /* Keeps link text on one line */
+    text-decoration: none;
+    color: #e5e7eb; /* Light gray text */
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.quick-link:hover {
+    color: var(--light-color);
+    transform: scale(1.05);
+}
+
+.quick-link-loading {
+    white-space: nowrap;
+    font-style: italic;
+    color: #a0aec0;
+}
