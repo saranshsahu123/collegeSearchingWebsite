@@ -702,11 +702,13 @@ section {
 /* --- Course Quick Bar --- */
 /* ============================ */
 .course-quick-bar {
-    background: #1f2937; /* Dark background */
+    background: #1f2937; /* Dark background from your footer */
     color: var(--light-color);
     padding: 0.75rem 0;
     position: fixed;
-    /* This value is your main navbar's height. Adjust if needed. */
+    /* This value is your main navbar's height. 
+       Check your navbar CSS to find its height and set this. 
+       Let's assume 68px for now. */
     top: 68px; 
     width: 100%;
     z-index: 999; /* Below navbar, above everything else */

@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show loader on link clicks
         document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
             link.addEventListener('click', (e) => {
-                // Check if the link is to an external site
-                if (link.hostname !== window.location.hostname) {
+                // Check if the link is to an external site or a different target
+                if (link.hostname !== window.location.hostname || link.target === '_blank') {
                     return; // Don't prevent default for external links
                 }
                 e.preventDefault();
@@ -100,15 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display all courses
     async function fetchCourses() {
-        // Check if elements exist on this page
-        if (!coursesContainer || !filterCourse) return; 
+        // Check if elements exist on this page (prevents errors on detail pages)
+        if (!coursesContainer || !filterCourse || !courseQuickBar) return; 
 
         try {
             const res = await fetch(`${API_URL}/courses`);
             const courses = await res.json();
             
-            coursesContainer.innerHTML = ''; // Clear loader
+            // --- FIX: Moved all "clear" lines to the top ---
+            coursesContainer.innerHTML = ''; // Clear card container
             filterCourse.innerHTML = '<option value="">Filter by Course</option>'; // Reset filter
+            courseQuickBar.innerHTML = ''; // Clear "Loading..." from quick bar
+            // --- END OF FIX ---
             
             courses.forEach(course => {
                 // Add to course section
@@ -131,27 +134,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = course.name;
                 filterCourse.appendChild(option);
 
-                // --- ADD THIS ---
-    // Add the same course to the quick bar
-    const quickLink = document.createElement('a');
-    quickLink.href = `course.html?id=${course._id}`;
-    quickLink.className = 'quick-link';
-    quickLink.textContent = course.name;
-    courseQuickBar.appendChild(quickLink);
-    // --- END OF ADD ---
-    
+                // Add the same course to the quick bar
+                const quickLink = document.createElement('a');
+                quickLink.href = `course.html?id=${course._id}`;
+                quickLink.className = 'quick-link';
+                quickLink.textContent = course.name;
+                courseQuickBar.appendChild(quickLink);
             });
-
-            coursesContainer.innerHTML = '';
-        filterCourse.innerHTML = '<option value="">Filter by Course</option>';
-        courseQuickBar.innerHTML = ''; // <-- ADD THIS LINE to clear "Loading..."
+            
+            // --- FIX: Removed the 3 error lines from here ---
 
         }  catch (err) {
-    console.error('Error fetching courses:', err);
-    coursesContainer.innerHTML = '<p>Error loading courses.</p>';
-    // --- ADD THIS LINE ---
-    courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
-}
+            console.error('Error fetching courses:', err);
+            coursesContainer.innerHTML = '<p>Error loading courses.</p>';
+            courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
+        }
     }
 
     // Fetch and display all cities
@@ -235,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- Event Listeners ---
+    // Added checks to prevent errors on other pages
     if (filterCourse) {
         filterCourse.addEventListener('change', () => fetchColleges(filterCourse.value, filterCity.value, filterRank.value));
     }
