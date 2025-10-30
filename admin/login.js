@@ -6,7 +6,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const messageEl = document.getElementById('message');
 
     try {
-        const res = await fetch('https://college-finder-api.onrender.com/api/auth/signup', {
+       const res = await fetch('https://college-finder-api.onrender.com/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
