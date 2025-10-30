@@ -466,7 +466,7 @@ section {
 .footer {
     background: var(--text-color);
     color: #a0aec0; /* Lighter text for contrast */
-    padding: 4rem 0 2rem 0;
+    padding: 1rem 0 1rem 0;
     margin-top: 4rem;
 }
 
@@ -705,58 +705,103 @@ section {
 .course-quick-bar {
     background: #1f2937; /* Dark background */
     color: var(--light-color);
-    /* 1. ADD PADDING: Increased vertical padding */
     padding: 1rem 0;
     position: fixed;
-    /* This value is your main navbar's height. Adjust if needed. */
-    top: 68px; 
+    top: 68px; /* Your navbar height */
     width: 100%;
-    z-index: 999; /* Below navbar, above everything else */
+    z-index: 999;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* This is the new wrapper for the buttons and list */
+.quick-bar-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .course-quick-bar .container {
     display: flex;
     flex-wrap: nowrap; /* Prevents wrapping */
     overflow-x: auto; /* Allows horizontal scrolling */
-    gap: 2rem; /* Increased spacing between links */
+    gap: 2rem;
     
-    /* 3. PLACE IN CENTER (Desktop): */
-    justify-content: center;
+    /* FIX: Always align left so scrolling works */
+    justify-content: flex-start; 
 
-    /* 1. ADD PADDING: Added horizontal padding inside */
     padding: 0 1.5rem; 
     
-    /* Fix for centering issue on some browsers when scrolling */
-    flex-shrink: 0;
-    width: 100%;
+    /* Hides the scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+
+    /* Makes the JS scroll smooth */
+    scroll-behavior: smooth;
+    
+    /* Add padding so buttons don't overlap content */
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
-/* 2. RESPONSIVE: On small screens, align left for scrolling */
-@media (max-width: 900px) { /* Aligns with your navbar breakpoint */
+.course-quick-bar .container::-webkit-scrollbar {
+    display: none; /* Hides scrollbar for Chrome/Safari */
+}
+
+/* New Arrow Button Styles */
+.scroll-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--light-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, opacity 0.3s ease;
+    opacity: 1; /* Show by default, JS will hide */
+}
+
+.scroll-arrow:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-arrow#scroll-left {
+    left: 10px;
+}
+
+.scroll-arrow#scroll-right {
+    right: 10px;
+}
+
+/* JS will add this class to hide the buttons */
+.scroll-arrow.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Responsive fix for mobile: make arrows smaller */
+@media (max-width: 768px) {
+    .scroll-arrow {
+        width: 30px;
+        height: 30px;
+    }
     .course-quick-bar .container {
-        justify-content: flex-start; /* Align left to scroll */
-        padding: 0 1rem; /* Adjust padding for mobile */
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
     }
 }
 
-/* Hides the scrollbar for a cleaner look */
-.course-quick-bar .container::-webkit-scrollbar {
-    height: 3px;
-}
-.course-quick-bar .container::-webkit-scrollbar-thumb {
-    background: var(--primary-light);
-    border-radius: 10px;
-}
-.course-quick-bar .container::-webkit-scrollbar-track {
-    background: #4a5568;
-}
-
 .quick-link {
-    white-space: nowrap; /* Keeps link text on one line */
+    white-space: nowrap; 
     text-decoration: none;
-    color: #e5e7eb; /* Light gray text */
-    /* Slightly larger font for better clicking */
+    color: #e5e7eb;
     font-size: 1rem; 
     font-weight: 500;
     transition: color 0.3s ease, transform 0.3s ease;
