@@ -571,7 +571,7 @@ section {
 /* --- Detail Page Styles --- */
 /* ============================ */
 .detail-page-container {
-    margin-top: 100px;
+    margin-top: 15rem;
 }
 /* ... (All your existing .detail-page styles) ... */
 /* Ensure detail cards also use new vars */
