@@ -6,23 +6,52 @@
     <title>City Details</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+    <div id="page-loader">
+        <div class="spinner"></div>
+    </div>
+
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo">CollegeFinder</a>
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i> CollegeFinder
+            </a>
+            <button class="nav-toggle" aria-label="toggle navigation">
+                <span class="hamburger"></span>
+            </button>
             <div class="nav-menu">
                 <ul class="nav-links">
                     <li><a href="index.html#courses">Courses</a></li>
                     <li><a href="index.html#cities">Cities</a></li>
                     <li><a href="index.html#colleges">Colleges</a></li>
                 </ul>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search colleges...">
+                    <button id="searchButton" aria-label="Search"><i class="fas fa-search"></i></button>
+                </div>
             </div>
         </div>
     </nav>
 
-   <main class="container page-content detail-page-container" id="...">
+    <section class="course-quick-bar">
+        <div class="quick-bar-wrapper">
+            <button class="scroll-arrow" id="scroll-left" aria-label="Scroll left">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="container" id="course-quick-bar-links">
+                <span class="quick-link-loading">Loading courses...</span>
+            </div>
+            <button class="scroll-arrow" id="scroll-right" aria-label="Scroll right">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <main class="container page-content detail-page-container" id="city-detail-content">
         <h1 id="loading-message">Loading...</h1>
     </main>
 
