@@ -255,61 +255,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- ADD THIS ENTIRE BLOCK to the top of all 4 JS files ---
 
+// ... (inside your DOMContentLoaded listener)
+
     // --- Quick Bar Scroller Logic ---
     const scrollContainer = document.getElementById('course-quick-bar-links');
     const scrollLeftBtn = document.getElementById('scroll-left');
     const scrollRightBtn = document.getElementById('scroll-right');
+    
+    // --- ADD THIS NEW CODE ---
+    let autoScrollInterval = null;
+
+    function startAutoScroll() {
+        if (autoScrollInterval) return; // Already running
+        autoScrollInterval = setInterval(() => {
+            if (scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
+                scrollContainer.scrollLeft += 1; // Scroll 1px
+            } else {
+                // When it reaches the end, reset to the beginning
+                scrollContainer.scrollLeft = 0;
+            }
+        }, 50); // Adjust scroll speed (milliseconds)
+    }
+
+    function stopAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+    // --- END OF NEW CODE ---
+
 
     function checkScroll() {
-        if (!scrollContainer) return; // Failsafe
-
-        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-        
-        // Hide/Show Left Arrow
-        if (scrollContainer.scrollLeft > 0) {
-            scrollLeftBtn.classList.remove('is-hidden');
-        } else {
-            scrollLeftBtn.classList.add('is-hidden');
-        }
-        
-        // Hide/Show Right Arrow
-        // Use a 1px buffer for precision
-        if (scrollContainer.scrollLeft < maxScroll - 1) {
-            scrollRightBtn.classList.remove('is-hidden');
-        } else {
-            scrollRightBtn.classList.add('is-hidden');
-        }
+        // ... (your existing checkScroll function)
     }
 
     if (scrollContainer) {
         // Add click events for arrows
         scrollLeftBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft -= 200; // Scroll left by 200px
+            scrollContainer.scrollLeft -= 200; 
+            stopAutoScroll(); // --- ADD THIS
         });
         
         scrollRightBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft += 200; // Scroll right by 200px
+            scrollContainer.scrollLeft += 200;
+            stopAutoScroll(); // --- ADD THIS
         });
 
         // Listen for scrolling to check arrows
         scrollContainer.addEventListener('scroll', checkScroll);
-        
         // Listen for window resize to check arrows
         window.addEventListener('resize', checkScroll);
 
-        // Check scroll on initial load (after a delay for content to load)
-        setTimeout(checkScroll, 500);
+        // --- ADD THESE 2 LINES ---
+        scrollContainer.addEventListener('mouseenter', stopAutoScroll);
+        scrollContainer.addEventListener('mouseleave', startAutoScroll);
 
-        // Use a MutationObserver to re-check when links are added
-        const observer = new MutationObserver(() => {
+        // ... (your existing MutationObserver code)
+
+        // --- REPLACE `setTimeout(checkScroll, 500);` WITH THIS: ---
+        setTimeout(() => {
             checkScroll();
-            // We can disconnect after the first time to save performance
-            observer.disconnect(); 
-        });
-        
-        // Watch for new child elements (the links) being added
-        observer.observe(scrollContainer, { childList: true });
+            startAutoScroll(); // Start scrolling on load
+        }, 1000); // Wait for content to load
     }
+// ... (rest of your script)
 
 // --- END OF NEW BLOCK ---
 
