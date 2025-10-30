@@ -237,6 +237,7 @@ section {
 /* --- Hero Slider --- */
 /* ============================ */
 .hero-slider {
+    margin-top: 1rem ;
     position: relative;
     width: 100%;
     height: 90vh;
@@ -704,8 +705,9 @@ section {
 .course-quick-bar {
     background: #1f2937; /* Dark background from your footer */
     color: var(--light-color);
-    padding: 0.75rem 0;
+    padding: 0.85rem 0;
     position: fixed;
+    
     /* This value is your main navbar's height. 
        Check your navbar CSS to find its height and set this. 
        Let's assume 68px for now. */
@@ -717,6 +719,7 @@ section {
 
 .course-quick-bar .container {
     display: flex;
+    align-items: center;
     flex-wrap: nowrap; /* Prevents wrapping */
     overflow-x: auto; /* Allows horizontal scrolling */
     gap: 1.75rem;
