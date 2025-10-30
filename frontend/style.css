@@ -703,14 +703,12 @@ section {
 /* --- Course Quick Bar --- */
 /* ============================ */
 .course-quick-bar {
-    background: #1f2937; /* Dark background from your footer */
+    background: #1f2937; /* Dark background */
     color: var(--light-color);
-    padding: 0.85rem 0;
+    /* 1. ADD PADDING: Increased vertical padding */
+    padding: 1rem 0;
     position: fixed;
-    
-    /* This value is your main navbar's height. 
-       Check your navbar CSS to find its height and set this. 
-       Let's assume 68px for now. */
+    /* This value is your main navbar's height. Adjust if needed. */
     top: 68px; 
     width: 100%;
     z-index: 999; /* Below navbar, above everything else */
@@ -719,11 +717,27 @@ section {
 
 .course-quick-bar .container {
     display: flex;
-    align-items: center;
     flex-wrap: nowrap; /* Prevents wrapping */
     overflow-x: auto; /* Allows horizontal scrolling */
-    gap: 1.75rem;
-    padding-bottom: 5px; /* Space for scrollbar if it appears */
+    gap: 2rem; /* Increased spacing between links */
+    
+    /* 3. PLACE IN CENTER (Desktop): */
+    justify-content: center;
+
+    /* 1. ADD PADDING: Added horizontal padding inside */
+    padding: 0 1.5rem; 
+    
+    /* Fix for centering issue on some browsers when scrolling */
+    flex-shrink: 0;
+    width: 100%;
+}
+
+/* 2. RESPONSIVE: On small screens, align left for scrolling */
+@media (max-width: 900px) { /* Aligns with your navbar breakpoint */
+    .course-quick-bar .container {
+        justify-content: flex-start; /* Align left to scroll */
+        padding: 0 1rem; /* Adjust padding for mobile */
+    }
 }
 
 /* Hides the scrollbar for a cleaner look */
@@ -742,7 +756,8 @@ section {
     white-space: nowrap; /* Keeps link text on one line */
     text-decoration: none;
     color: #e5e7eb; /* Light gray text */
-    font-size: 0.9rem;
+    /* Slightly larger font for better clicking */
+    font-size: 1rem; 
     font-weight: 500;
     transition: color 0.3s ease, transform 0.3s ease;
 }
