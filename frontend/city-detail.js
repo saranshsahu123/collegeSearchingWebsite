@@ -1,17 +1,70 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // This is your LIVE backend API URL
+    
+    // --- SELECTORS ---
     const API_URL = 'https://college-finder-api.onrender.com/api/public';
     const BASE_URL = 'https://college-finder-api.onrender.com';
 
+    const loader = document.getElementById('page-loader');
+    const courseQuickBar = document.getElementById('course-quick-bar-links');
     const content = document.getElementById('city-detail-content');
     const loadingMessage = document.getElementById('loading-message');
 
+    // --- LOADER LOGIC ---
+    // We hide it in the fetch function, but also hide on error
+    function hideLoader() {
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 300);
+        }
+    }
+
+    // Show loader on link clicks
+    document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Check if the link is to an external site or a different target
+            if (link.hostname !== window.location.hostname || link.target === '_blank') {
+                return; // Don't prevent default for external/new tab links
+            }
+            e.preventDefault();
+            const href = link.getAttribute('href');
+            if (loader) {
+                loader.style.display = 'flex';
+                setTimeout(() => { loader.style.opacity = '1'; }, 10);
+            }
+            setTimeout(() => { window.location = href; }, 400); // Wait for transition
+        });
+    });
+
+    // --- QUICK BAR LOGIC ---
+    // This function's only job is to fill the quick bar
+    async function fetchCourseLinks() {
+        if (!courseQuickBar) return;
+        try {
+            const res = await fetch(`${API_URL}/courses`);
+            const courses = await res.json();
+            courseQuickBar.innerHTML = ''; // Clear "Loading..."
+
+            courses.forEach(course => {
+                const quickLink = document.createElement('a');
+                quickLink.href = `course.html?id=${course._id}`;
+                quickLink.className = 'quick-link';
+                quickLink.textContent = course.name;
+                courseQuickBar.appendChild(quickLink);
+            });
+        } catch (err) {
+            console.error('Error fetching course links:', err);
+            courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
+        }
+    }
+
+    // --- PAGE-SPECIFIC LOGIC ---
     // Get the ID from the URL (e.g., city.html?id=123)
     const params = new URLSearchParams(window.location.search);
     const cityId = params.get('id');
 
     if (!cityId) {
         content.innerHTML = '<h1>Error: No city ID provided.</h1>';
+        hideLoader(); // Hide loader on error
         return;
     }
 
@@ -28,12 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error(err);
             content.innerHTML = `<h1>Error: ${err.message}</h1>`;
+            hideLoader(); // Hide loader on error
         }
     }
 
     function displayCityDetails(city, colleges) {
         // Clear loading message
-        loadingMessage.remove();
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
 
         // --- Handle City Image ---
         const imageUrl = city.imageUrl 
@@ -63,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- Build Final Page HTML ---
+        // **FIXED: Corrected typo "class." to "class="**
         content.innerHTML = `
             <div class="detail-header">
                 <img src="${imageUrl}" alt="${city.name}">
@@ -74,63 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${city.description || 'No description available.'}</p>
                 </div>
 
-                <div class.detail-info-card">
+                <div class="detail-info-card"> 
                     <h3><i class="fas fa-university"></i> Colleges in ${city.name} (${colleges.length})</h3>
                     ${collegesHTML}
                 </div>
             </div>
         `;
+        
+        hideLoader(); // Hide loader on success
     }
 
+    // --- INITIALIZE ---
     fetchCityDetails();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- ADD THIS LOADER LOGIC ---
-    const loader = document.getElementById('page-loader');
-
-    // Hide loader on page load
-    // We hide it in the fetch function, but also hide on error
-    function hideLoader() {
-        loader.style.opacity = '0';
-        setTimeout(() => { loader.style.display = 'none'; }, 300);
-    }
-
-    // Show loader on link clicks
-    document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const href = link.getAttribute('href');
-            loader.style.display = 'flex';
-            setTimeout(() => { loader.style.opacity = '1'; }, 10);
-            setTimeout(() => { window.location = href; }, 400); // Wait for transition
-        });
-    });
-    // --- END OF LOADER LOGIC ---
-
-    // This is your existing code
-    const API_URL = '...';
-    // ...
-    
-    // --- UPDATE your fetch functions ---
-    // Example for college-detail.js
-    async function fetchCollegeDetails() {
-        try {
-            // ...
-            displayCollege(college);
-        } catch (err) {
-            console.error(err);
-            content.innerHTML = `<h1>Error: ${err.message}</h1>`;
-            hideLoader(); // <-- ADD THIS
-        }
-    }
-
-    function displayCollege(college) {
-        // ...
-        content.innerHTML = `...`;
-        hideLoader(); // <-- ADD THIS
-    }
-
-    fetchCollegeDetails();
+    fetchCourseLinks();
 });
