@@ -7,7 +7,24 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors());
+// Define which domains are allowed to make requests
+const allowedOrigins = [
+  'https://college-finder-frontend.onrender.com', // Your frontend site
+  'https://college-finder-admin.onrender.com'   // Your admin site
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman or mobile apps)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from this origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 app.use(express.json());
 // Serve static files (like uploaded college images)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
