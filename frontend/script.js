@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let slideIndex = 0;
     const slides = document.querySelectorAll('.slide-item');
     const dots = document.querySelectorAll('.dot');
-    
+
     function showSlide(n) {
         if (slides.length === 0) return;
         slideIndex = (n + slides.length) % slides.length;
@@ -55,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function autoSlide() {
         showSlide(slideIndex + 1);
     }
-    
+
     if (slides.length > 0) {
         showSlide(0);
         let slideInterval = setInterval(autoSlide, 5000);
-        
+
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
                 showSlide(index);
@@ -114,17 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkScroll() {
-        if (!scrollContainer) return; 
+        if (!scrollContainer) return;
 
         const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-        
+
         // Hide/Show Left Arrow
         if (scrollContainer.scrollLeft > 0) {
             scrollLeftBtn.classList.remove('is-hidden');
         } else {
             scrollLeftBtn.classList.add('is-hidden');
         }
-        
+
         // Hide/Show Right Arrow
         if (scrollContainer.scrollLeft < maxScroll - 1) {
             scrollRightBtn.classList.remove('is-hidden');
@@ -135,13 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (scrollContainer) {
         scrollLeftBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft -= 200; 
-            stopAutoScroll(); 
+            scrollContainer.scrollLeft -= 200;
+            stopAutoScroll();
         });
-        
+
         scrollRightBtn.addEventListener('click', () => {
             scrollContainer.scrollLeft += 200;
-            stopAutoScroll(); 
+            stopAutoScroll();
         });
 
         scrollContainer.addEventListener('scroll', checkScroll);
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disconnect after first run to save performance
             observer.disconnect();
         });
-        
+
         observer.observe(scrollContainer, { childList: true });
 
         setTimeout(() => {
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startAutoScroll(); // Start scrolling on load
         }, 1000); // Wait for content to load
     }
-    
+
     // --- Card Scroller Logic ---
     document.querySelectorAll('.card-scroll-wrapper').forEach(wrapper => {
         const scrollContainer = wrapper.querySelector('.card-container');
@@ -174,13 +174,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function checkCardScroll() {
             const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-            
+
             if (scrollContainer.scrollLeft > 0) {
                 scrollLeftBtn.classList.remove('is-hidden');
             } else {
                 scrollLeftBtn.classList.add('is-hidden');
             }
-            
+
             if (scrollContainer.scrollLeft < maxScroll - 1) {
                 scrollRightBtn.classList.remove('is-hidden');
             } else {
@@ -189,9 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         scrollLeftBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft -= 352; 
+            scrollContainer.scrollLeft -= 352;
         });
-        
+
         scrollRightBtn.addEventListener('click', () => {
             scrollContainer.scrollLeft += 352;
         });
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const observer = new MutationObserver(() => {
             checkCardScroll();
         });
-        
+
         observer.observe(scrollContainer, { childList: true });
         setTimeout(checkCardScroll, 1000);
     });
@@ -213,16 +213,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display all courses
     async function fetchCourses() {
-        if (!coursesContainer || !filterCourse || !courseQuickBar) return; 
+        if (!coursesContainer || !filterCourse || !courseQuickBar) return;
 
         try {
             const res = await fetch(`${API_URL}/courses`);
             const courses = await res.json();
-            
+
             coursesContainer.innerHTML = '';
             filterCourse.innerHTML = '<option value="">Filter by Course</option>';
             courseQuickBar.innerHTML = '';
-            
+
             courses.forEach(course => {
                 const courseCard = document.createElement('div');
                 courseCard.className = 'card';
@@ -249,42 +249,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 courseQuickBar.appendChild(quickLink);
             });
 
-        }  catch (err) {
+        } catch (err) {
             console.error('Error fetching courses:', err);
-            if(coursesContainer) coursesContainer.innerHTML = '<p>Error loading courses.</p>';
-            if(courseQuickBar) courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
+            if (coursesContainer) coursesContainer.innerHTML = '<p>Error loading courses.</p>';
+            if (courseQuickBar) courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
         }
     }
 
     // Fetch and display all cities
+    // Fetch and display all cities
     async function fetchCities() {
-        if (!citiesContainer || !filterCity) return; 
+        // Check if elements exist on this page
+        if (!citiesContainer || !filterCity) return;
 
         try {
             const res = await fetch(`${API_URL}/cities`);
             const cities = await res.json();
-            
-            citiesContainer.innerHTML = '';
-            filterCity.innerHTML = '<option value="">Filter by City</option>';
+
+            citiesContainer.innerHTML = ''; // Clear loader
+            filterCity.innerHTML = '<option value="">Filter by City</option>'; // Reset filter
 
             cities.forEach(city => {
+                // Add to city section
                 const cityCard = document.createElement('div');
                 cityCard.className = 'card';
                 cityCard.dataset.id = city._id;
                 const imageUrl = city.imageUrl ? `${BASE_URL}/${city.imageUrl.replace(/\\/g, '/')}` : 'https://via.placeholder.com/300x200?text=City';
-                
+
+                // --- FIX IS HERE ---
+                // Changed "class." to "class=" in the two lines below
                 cityCard.innerHTML = `
-                    <div class.card-image">
-                        <img src="${imageUrl}" alt="${city.name}">
-                    </div>
-                    <div class.card-content">
-                        <h3>${city.name}</h3>
-                        <p>${city.collegeCount} Colleges</p>
-                        <a href="city.html?id=${city._id}" class="btn">View More</a>
-                    </div>
-                `;
+                <div class="card-image">
+                    <img src="${imageUrl}" alt="${city.name}">
+                </div>
+                <div class="card-content">
+                    <h3>${city.name}</h3>
+                    <p>${city.collegeCount} Colleges</p>
+                    <a href="city.html?id=${city._id}" class="btn">View More</a>
+                </div>
+            `;
+                // --- END OF FIX ---
+
                 citiesContainer.appendChild(cityCard);
 
+                // Add to filter dropdown
                 const option = document.createElement('option');
                 option.value = city._id;
                 option.textContent = city.name;
@@ -292,14 +300,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (err) {
             console.error('Error fetching cities:', err);
-            if(citiesContainer) citiesContainer.innerHTML = '<p>Error loading cities.</p>';
+            if (citiesContainer) citiesContainer.innerHTML = '<p>Error loading cities.</p>';
         }
     }
 
     // Fetch and display colleges in the table
     async function fetchColleges(courseId = '', cityId = '', rankSort = '') {
-        if (!collegesTableBody) return; 
-        
+        if (!collegesTableBody) return;
+
         try {
             let query = new URLSearchParams();
             if (courseId) query.append('course', courseId);
@@ -308,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const res = await fetch(`${API_URL}/colleges?${query.toString()}`);
             const colleges = await res.json();
-            
+
             collegesTableBody.innerHTML = '';
             if (colleges.length === 0) {
                 collegesTableBody.innerHTML = '<tr><td colspan="5">No colleges found matching your criteria.</td></tr>';
@@ -328,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (err) {
             console.error('Error fetching colleges:', err);
-            if(collegesTableBody) collegesTableBody.innerHTML = '<tr><td colspan="5">Error loading colleges.</td></tr>';
+            if (collegesTableBody) collegesTableBody.innerHTML = '<tr><td colspan="5">Error loading colleges.</td></tr>';
         }
     }
 
@@ -342,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchReviews() {
-        if (!reviewList) return; 
+        if (!reviewList) return;
 
         try {
             const res = await fetch(`${API_URL}/reviews`);
@@ -371,17 +379,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (err) {
             console.error('Error fetching reviews:', err);
-            if(reviewList) reviewList.innerHTML = '<p>Could not load reviews.</p>';
+            if (reviewList) reviewList.innerHTML = '<p>Could not load reviews.</p>';
         }
     }
 
     async function handleReviewSubmit(e) {
         e.preventDefault();
-        
+
         const name = document.getElementById('review-name').value;
         const reviewText = document.getElementById('review-text').value;
         const rating = document.querySelector('input[name="rating"]:checked');
-        
+
         if (!rating) {
             reviewMessage.textContent = 'Please select a star rating.';
             reviewMessage.style.color = 'red';
@@ -417,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewMessage.style.color = 'red';
         }
     }
-    
+
     // --- Event Listeners ---
     if (filterCourse) {
         filterCourse.addEventListener('change', () => fetchColleges(filterCourse.value, filterCity.value, filterRank.value));
