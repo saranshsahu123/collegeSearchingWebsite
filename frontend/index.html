@@ -152,46 +152,46 @@
 
         
 <section id="reviews" class="animate-on-scroll">
-            <h2 class="section-title">What Our Students Say</h2>
-            <div class="review-wrapper">
+    <h2 class="section-title">What Our Students Say</h2>
+    <div class="review-wrapper">
+        
+        <div class="review-form-container"> 
+            <h3>Leave a Review</h3>
+            <form id="review-form">
+                <div class="form-group">
+                    <label for="review-name">Your Name</label>
+                    <input type="text" id="review-name" placeholder="Enter your name" required>
+                </div>
                 
-                <div class.review-form-container">
-                    <h3>Leave a Review</h3>
-                    <form id="review-form">
-                        <div class="form-group">
-                            <label for="review-name">Your Name</label>
-                            <input type="text" id="review-name" placeholder="Enter your name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Your Rating</label>
-                            <div class="star-rating">
-                                <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 stars">★</label>
-                                <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
-                                <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
-                                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
-                                <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
-                            </div>
-                        </div>
-
-                        <div class.form-group">
-                            <label for="review-text">Your Review</label>
-                            <textarea id="review-text" rows="5" placeholder="Share your experience..." required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn">Submit Review</button>
-                        <p id="review-message"></p>
-                    </form>
+                <div class="form-group">
+                    <label>Your Rating</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 stars">★</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
+                    </div>
                 </div>
 
-                <div class="review-list-container">
-                    <h3>Recent Reviews</h3>
-                    <div id="review-list">
-                        </div>
+                <div class="form-group"> 
+                    <label for="review-text">Your Review</label>
+                    <textarea id="review-text" rows="5" placeholder="Share your experience..." required></textarea>
                 </div>
+                
+                <button type="submit" class="btn">Submit Review</button>
+                <p id="review-message"></p>
+            </form>
+        </div>
 
-            </div>
-        </section>
+        <div class="review-list-container">
+            <h3>Recent Reviews</h3>
+            <div id="review-list">
+                </div>
+        </div>
+
+    </div>
+</section>
 
     </main> 
 

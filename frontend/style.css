@@ -895,17 +895,19 @@ section {
      }
 }
 
+
 /* ============================ */
 /* --- Student Reviews --- */
 /* ============================ */
 .review-wrapper {
     display: grid;
-    grid-template-columns: 1fr 2fr; /* Form on left, list on right */
+    /* Form on left (1 part), list on right (2 parts) */
+    grid-template-columns: 1fr 2fr; 
     gap: 3rem;
     background: var(--light-color);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 10px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-lg); /* Uses your existing shadow */
 }
 
 .review-form-container h3,
@@ -932,6 +934,7 @@ section {
 .form-group label {
     font-weight: 500;
     margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
 .form-group input,
@@ -961,12 +964,13 @@ section {
 /* Star Rating CSS */
 .star-rating {
     display: flex;
-    flex-direction: row-reverse; /* This is the trick */
+    /* This makes the stars fill from right-to-left */
+    flex-direction: row-reverse; 
     justify-content: flex-end;
 }
 
 .star-rating input[type="radio"] {
-    display: none; /* Hide the radio button */
+    display: none; /* Hide the actual radio button */
 }
 
 .star-rating label {
@@ -982,14 +986,14 @@ section {
     color: var(--primary-light);
 }
 
-/* Color stars when checked */
+/* Color stars when checked (selected) */
 .star-rating input[type="radio"]:checked ~ label {
     color: var(--primary-color);
 }
 
 /* Review List Styles */
 .review-list-container {
-    max-height: 500px;
+    max-height: 500px; /* Makes the list scrollable */
     overflow-y: auto;
     padding-right: 1rem;
 }
@@ -1000,6 +1004,7 @@ section {
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     border-left: 4px solid var(--primary-color);
+    box-shadow: var(--shadow);
 }
 
 .review-card-header {
@@ -1027,9 +1032,15 @@ section {
     line-height: 1.6;
 }
 
-/* --- Responsive for Reviews --- */
+/* --- Add this to your responsive section --- */
+/* You can just add this @media block at the end of your CSS file */
 @media (max-width: 900px) {
     .review-wrapper {
-        grid-template-columns: 1fr; /* Stack on mobile */
+        grid-template-columns: 1fr; /* Stacks form on top of list */
+    }
+
+    .review-list-container {
+        max-height: 300px; /* Shorter scroll height on mobile */
     }
 }
+
