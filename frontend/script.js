@@ -1,26 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- SELECTORS ---
     const loader = document.getElementById('page-loader');
     const courseQuickBar = document.getElementById('course-quick-bar-links');
+    const reviewForm = document.getElementById('review-form');
+    const reviewList = document.getElementById('review-list');
+    const reviewMessage = document.getElementById('review-message');
+    const coursesContainer = document.getElementById('courses-container');
+    const citiesContainer = document.getElementById('cities-container');
+    const collegesTableBody = document.getElementById('colleges-table-body');
+    const filterCourse = document.getElementById('filter-course');
+    const filterCity = document.getElementById('filter-city');
+    const filterRank = document.getElementById('filter-rank');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    // --- API URLS ---
+    const API_URL = 'https://college-finder-api.onrender.com/api/public';
+    const BASE_URL = 'https://college-finder-api.onrender.com';
 
     // --- Page Loader Logic ---
     if (loader) {
-        // Hide loader on page load
         loader.style.opacity = '0';
         setTimeout(() => { loader.style.display = 'none'; }, 300);
 
-        // Show loader on link clicks
         document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
             link.addEventListener('click', (e) => {
-                // Check if the link is to an external site or a different target
                 if (link.hostname !== window.location.hostname || link.target === '_blank') {
-                    return; // Don't prevent default for external links
+                    return;
                 }
                 e.preventDefault();
                 const href = link.getAttribute('href');
                 loader.style.display = 'flex';
                 setTimeout(() => { loader.style.opacity = '1'; }, 10);
-                setTimeout(() => { window.location = href; }, 400); // Wait for transition
+                setTimeout(() => { window.location = href; }, 400);
             });
         });
     }
@@ -31,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = document.querySelectorAll('.dot');
     
     function showSlide(n) {
-        if (slides.length === 0) return; // Don't run if no slider
-        slideIndex = (n + slides.length) % slides.length; // Loop around
+        if (slides.length === 0) return;
+        slideIndex = (n + slides.length) % slides.length;
         slides.forEach(slide => slide.classList.remove('active'));
         dots.forEach(dot => dot.classList.remove('active'));
         slides[slideIndex].classList.add('active');
@@ -44,22 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (slides.length > 0) {
-        showSlide(0); // Show first slide
-        let slideInterval = setInterval(autoSlide, 5000); // Change slide every 5 seconds
+        showSlide(0);
+        let slideInterval = setInterval(autoSlide, 5000);
         
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
                 showSlide(index);
-                clearInterval(slideInterval); // Reset timer on manual click
+                clearInterval(slideInterval);
                 slideInterval = setInterval(autoSlide, 5000);
             });
         });
     }
 
     // --- Navbar Toggle Logic ---
-    const navToggle = document.querySelector('.nav-toggle');
-    const navMenu = document.querySelector('.nav-menu');
-    
     if (navToggle) {
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('is-active');
@@ -79,42 +89,141 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.animate-on-scroll').forEach(section => {
         scrollObserver.observe(section);
     });
+
+    // --- Quick Bar Scroller Logic ---
+    const scrollContainer = document.getElementById('course-quick-bar-links');
+    const scrollLeftBtn = document.getElementById('scroll-left');
+    const scrollRightBtn = document.getElementById('scroll-right');
+    let autoScrollInterval = null;
+
+    function startAutoScroll() {
+        if (!scrollContainer) return; // Failsafe
+        if (autoScrollInterval) return; // Already running
+        autoScrollInterval = setInterval(() => {
+            if (scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
+                scrollContainer.scrollLeft += 1; // Scroll 1px
+            } else {
+                scrollContainer.scrollLeft = 0; // Reset to beginning
+            }
+        }, 50); // Adjust scroll speed
+    }
+
+    function stopAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+
+    function checkScroll() {
+        if (!scrollContainer) return; 
+
+        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+        
+        // Hide/Show Left Arrow
+        if (scrollContainer.scrollLeft > 0) {
+            scrollLeftBtn.classList.remove('is-hidden');
+        } else {
+            scrollLeftBtn.classList.add('is-hidden');
+        }
+        
+        // Hide/Show Right Arrow
+        if (scrollContainer.scrollLeft < maxScroll - 1) {
+            scrollRightBtn.classList.remove('is-hidden');
+        } else {
+            scrollRightBtn.classList.add('is-hidden');
+        }
+    }
+
+    if (scrollContainer) {
+        scrollLeftBtn.addEventListener('click', () => {
+            scrollContainer.scrollLeft -= 200; 
+            stopAutoScroll(); 
+        });
+        
+        scrollRightBtn.addEventListener('click', () => {
+            scrollContainer.scrollLeft += 200;
+            stopAutoScroll(); 
+        });
+
+        scrollContainer.addEventListener('scroll', checkScroll);
+        window.addEventListener('resize', checkScroll);
+
+        scrollContainer.addEventListener('mouseenter', stopAutoScroll);
+        scrollContainer.addEventListener('mouseleave', startAutoScroll);
+
+        const observer = new MutationObserver(() => {
+            checkScroll();
+            // Disconnect after first run to save performance
+            observer.disconnect();
+        });
+        
+        observer.observe(scrollContainer, { childList: true });
+
+        setTimeout(() => {
+            checkScroll();
+            startAutoScroll(); // Start scrolling on load
+        }, 1000); // Wait for content to load
+    }
     
+    // --- Card Scroller Logic ---
+    document.querySelectorAll('.card-scroll-wrapper').forEach(wrapper => {
+        const scrollContainer = wrapper.querySelector('.card-container');
+        const scrollLeftBtn = wrapper.querySelector('.card-scroll-left');
+        const scrollRightBtn = wrapper.querySelector('.card-scroll-right');
+
+        if (!scrollContainer || !scrollLeftBtn || !scrollRightBtn) return;
+
+        function checkCardScroll() {
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+            
+            if (scrollContainer.scrollLeft > 0) {
+                scrollLeftBtn.classList.remove('is-hidden');
+            } else {
+                scrollLeftBtn.classList.add('is-hidden');
+            }
+            
+            if (scrollContainer.scrollLeft < maxScroll - 1) {
+                scrollRightBtn.classList.remove('is-hidden');
+            } else {
+                scrollRightBtn.classList.add('is-hidden');
+            }
+        }
+
+        scrollLeftBtn.addEventListener('click', () => {
+            scrollContainer.scrollLeft -= 352; 
+        });
+        
+        scrollRightBtn.addEventListener('click', () => {
+            scrollContainer.scrollLeft += 352;
+        });
+
+        scrollContainer.addEventListener('scroll', checkCardScroll);
+        window.addEventListener('resize', checkCardScroll);
+
+        const observer = new MutationObserver(() => {
+            checkCardScroll();
+        });
+        
+        observer.observe(scrollContainer, { childList: true });
+        setTimeout(checkCardScroll, 1000);
+    });
+
     // ===========================================
     // --- Data Fetching & Main App Logic ---
     // ===========================================
 
-    const API_URL = 'https://college-finder-api.onrender.com/api/public';
-    const BASE_URL = 'https://college-finder-api.onrender.com';
-    
-    // --- Element Selectors ---
-    const coursesContainer = document.getElementById('courses-container');
-    const citiesContainer = document.getElementById('cities-container');
-    const collegesTableBody = document.getElementById('colleges-table-body');
-    
-    const filterCourse = document.getElementById('filter-course');
-    const filterCity = document.getElementById('filter-city');
-    const filterRank = document.getElementById('filter-rank');
-    
-    // --- Data Fetching Functions ---
-
     // Fetch and display all courses
     async function fetchCourses() {
-        // Check if elements exist on this page (prevents errors on detail pages)
         if (!coursesContainer || !filterCourse || !courseQuickBar) return; 
 
         try {
             const res = await fetch(`${API_URL}/courses`);
             const courses = await res.json();
             
-            // --- FIX: Moved all "clear" lines to the top ---
-            coursesContainer.innerHTML = ''; // Clear card container
-            filterCourse.innerHTML = '<option value="">Filter by Course</option>'; // Reset filter
-            courseQuickBar.innerHTML = ''; // Clear "Loading..." from quick bar
-            // --- END OF FIX ---
+            coursesContainer.innerHTML = '';
+            filterCourse.innerHTML = '<option value="">Filter by Course</option>';
+            courseQuickBar.innerHTML = '';
             
             courses.forEach(course => {
-                // Add to course section
                 const courseCard = document.createElement('div');
                 courseCard.className = 'card';
                 courseCard.dataset.id = course._id;
@@ -128,53 +237,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 coursesContainer.appendChild(courseCard);
 
-                // Add to filter dropdown
                 const option = document.createElement('option');
                 option.value = course._id;
                 option.textContent = course.name;
                 filterCourse.appendChild(option);
 
-                // Add the same course to the quick bar
                 const quickLink = document.createElement('a');
                 quickLink.href = `course.html?id=${course._id}`;
                 quickLink.className = 'quick-link';
                 quickLink.textContent = course.name;
                 courseQuickBar.appendChild(quickLink);
             });
-            
-            // --- FIX: Removed the 3 error lines from here ---
 
         }  catch (err) {
             console.error('Error fetching courses:', err);
-            coursesContainer.innerHTML = '<p>Error loading courses.</p>';
-            courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
+            if(coursesContainer) coursesContainer.innerHTML = '<p>Error loading courses.</p>';
+            if(courseQuickBar) courseQuickBar.innerHTML = '<span class="quick-link-loading">Error loading courses.</span>';
         }
     }
 
     // Fetch and display all cities
     async function fetchCities() {
-        // Check if elements exist on this page
         if (!citiesContainer || !filterCity) return; 
 
         try {
             const res = await fetch(`${API_URL}/cities`);
             const cities = await res.json();
             
-            citiesContainer.innerHTML = ''; // Clear loader
-            filterCity.innerHTML = '<option value="">Filter by City</option>'; // Reset filter
+            citiesContainer.innerHTML = '';
+            filterCity.innerHTML = '<option value="">Filter by City</option>';
 
             cities.forEach(city => {
-                // Add to city section
                 const cityCard = document.createElement('div');
                 cityCard.className = 'card';
                 cityCard.dataset.id = city._id;
                 const imageUrl = city.imageUrl ? `${BASE_URL}/${city.imageUrl.replace(/\\/g, '/')}` : 'https://via.placeholder.com/300x200?text=City';
                 
                 cityCard.innerHTML = `
-                    <div class="card-image">
+                    <div class.card-image">
                         <img src="${imageUrl}" alt="${city.name}">
                     </div>
-                    <div class="card-content">
+                    <div class.card-content">
                         <h3>${city.name}</h3>
                         <p>${city.collegeCount} Colleges</p>
                         <a href="city.html?id=${city._id}" class="btn">View More</a>
@@ -182,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 citiesContainer.appendChild(cityCard);
 
-                // Add to filter dropdown
                 const option = document.createElement('option');
                 option.value = city._id;
                 option.textContent = city.name;
@@ -190,13 +292,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (err) {
             console.error('Error fetching cities:', err);
-            citiesContainer.innerHTML = '<p>Error loading cities.</p>';
+            if(citiesContainer) citiesContainer.innerHTML = '<p>Error loading cities.</p>';
         }
     }
 
     // Fetch and display colleges in the table
     async function fetchColleges(courseId = '', cityId = '', rankSort = '') {
-        // Check if element exists on this page
         if (!collegesTableBody) return; 
         
         try {
@@ -208,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${API_URL}/colleges?${query.toString()}`);
             const colleges = await res.json();
             
-            collegesTableBody.innerHTML = ''; // Clear table
+            collegesTableBody.innerHTML = '';
             if (colleges.length === 0) {
                 collegesTableBody.innerHTML = '<tr><td colspan="5">No colleges found matching your criteria.</td></tr>';
                 return;
@@ -227,12 +328,97 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (err) {
             console.error('Error fetching colleges:', err);
-            collegesTableBody.innerHTML = '<tr><td colspan="5">Error loading colleges.</td></tr>';
+            if(collegesTableBody) collegesTableBody.innerHTML = '<tr><td colspan="5">Error loading colleges.</td></tr>';
+        }
+    }
+
+    // --- New Review Functions ---
+    function renderStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += `<i class="${i <= rating ? 'fas' : 'far'} fa-star"></i>`;
+        }
+        return stars;
+    }
+
+    async function fetchReviews() {
+        if (!reviewList) return; 
+
+        try {
+            const res = await fetch(`${API_URL}/reviews`);
+            const reviews = await res.json();
+
+            reviewList.innerHTML = '';
+            if (reviews.length === 0) {
+                reviewList.innerHTML = '<p>Be the first to leave a review!</p>';
+                return;
+            }
+
+            reviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                reviewCard.innerHTML = `
+                    <div class="review-card-header">
+                        <h4>${review.name}</h4>
+                        <span class="review-card-stars">
+                            ${renderStars(review.rating)}
+                        </span>
+                    </div>
+                    <p>"${review.reviewText}"</p>
+                `;
+                reviewList.appendChild(reviewCard);
+            });
+
+        } catch (err) {
+            console.error('Error fetching reviews:', err);
+            if(reviewList) reviewList.innerHTML = '<p>Could not load reviews.</p>';
+        }
+    }
+
+    async function handleReviewSubmit(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('review-name').value;
+        const reviewText = document.getElementById('review-text').value;
+        const rating = document.querySelector('input[name="rating"]:checked');
+        
+        if (!rating) {
+            reviewMessage.textContent = 'Please select a star rating.';
+            reviewMessage.style.color = 'red';
+            return;
+        }
+
+        const reviewData = {
+            name: name,
+            reviewText: reviewText,
+            rating: parseInt(rating.value, 10)
+        };
+
+        try {
+            const res = await fetch(`${API_URL}/reviews`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(reviewData)
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                reviewMessage.textContent = 'Review submitted! Thank you.';
+                reviewMessage.style.color = 'green';
+                reviewForm.reset();
+                fetchReviews(); // Refresh the review list
+            } else {
+                throw new Error(data.msg || 'Failed to submit review');
+            }
+        } catch (err) {
+            console.error('Error submitting review:', err);
+            reviewMessage.textContent = err.message;
+            reviewMessage.style.color = 'red';
         }
     }
     
     // --- Event Listeners ---
-    // Added checks to prevent errors on other pages
     if (filterCourse) {
         filterCourse.addEventListener('change', () => fetchColleges(filterCourse.value, filterCity.value, filterRank.value));
     }
@@ -242,144 +428,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filterRank) {
         filterRank.addEventListener('change', () => fetchColleges(filterCourse.value, filterCity.value, filterRank.value));
     }
+    // **FIX: Added missing review form listener**
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', handleReviewSubmit);
+    }
 
     // --- Initial Page Load ---
     function init() {
         fetchCourses();
         fetchCities();
-        fetchColleges(); // Load all colleges initially
+        fetchColleges();
+        fetchReviews(); // **FIX: Added missing fetchReviews call**
     }
 
     init(); // Run the app
 });
-
-// --- ADD THIS ENTIRE BLOCK to the top of all 4 JS files ---
-
-// ... (inside your DOMContentLoaded listener)
-
-    // --- Quick Bar Scroller Logic ---
-    const scrollContainer = document.getElementById('course-quick-bar-links');
-    const scrollLeftBtn = document.getElementById('scroll-left');
-    const scrollRightBtn = document.getElementById('scroll-right');
-    
-    // --- ADD THIS NEW CODE ---
-    let autoScrollInterval = null;
-
-    function startAutoScroll() {
-        if (autoScrollInterval) return; // Already running
-        autoScrollInterval = setInterval(() => {
-            if (scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
-                scrollContainer.scrollLeft += 1; // Scroll 1px
-            } else {
-                // When it reaches the end, reset to the beginning
-                scrollContainer.scrollLeft = 0;
-            }
-        }, 50); // Adjust scroll speed (milliseconds)
-    }
-
-    function stopAutoScroll() {
-        clearInterval(autoScrollInterval);
-        autoScrollInterval = null;
-    }
-    // --- END OF NEW CODE ---
-
-
-    function checkScroll() {
-        // ... (your existing checkScroll function)
-    }
-
-    if (scrollContainer) {
-        // Add click events for arrows
-        scrollLeftBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft -= 200; 
-            stopAutoScroll(); // --- ADD THIS
-        });
-        
-        scrollRightBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft += 200;
-            stopAutoScroll(); // --- ADD THIS
-        });
-
-        // Listen for scrolling to check arrows
-        scrollContainer.addEventListener('scroll', checkScroll);
-        // Listen for window resize to check arrows
-        window.addEventListener('resize', checkScroll);
-
-        // --- ADD THESE 2 LINES ---
-        scrollContainer.addEventListener('mouseenter', stopAutoScroll);
-        scrollContainer.addEventListener('mouseleave', startAutoScroll);
-
-        // ... (your existing MutationObserver code)
-
-        // --- REPLACE `setTimeout(checkScroll, 500);` WITH THIS: ---
-        setTimeout(() => {
-            checkScroll();
-            startAutoScroll(); // Start scrolling on load
-        }, 1000); // Wait for content to load
-    }
-// ... (rest of your script)
-
-// --- END OF NEW BLOCK ---
-
-// ... (your existing code for that file continues below)
-// const loader = document.getElementById('page-loader');
-// ...
-
-// ... (your existing "Quick Bar Scroller Logic")
-
-    // --- NEW: Card Scroller Logic ---
-    document.querySelectorAll('.card-scroll-wrapper').forEach(wrapper => {
-        const scrollContainer = wrapper.querySelector('.card-container');
-        const scrollLeftBtn = wrapper.querySelector('.card-scroll-left');
-        const scrollRightBtn = wrapper.querySelector('.card-scroll-right');
-
-        if (!scrollContainer || !scrollLeftBtn || !scrollRightBtn) return;
-
-        function checkCardScroll() {
-            // Check if scrolling is possible
-            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-            
-            // Hide/Show Left Arrow
-            if (scrollContainer.scrollLeft > 0) {
-                scrollLeftBtn.classList.remove('is-hidden');
-            } else {
-                scrollLeftBtn.classList.add('is-hidden');
-            }
-            
-            // Hide/Show Right Arrow (use 1px buffer for precision)
-            if (scrollContainer.scrollLeft < maxScroll - 1) {
-                scrollRightBtn.classList.remove('is-hidden');
-            } else {
-                scrollRightBtn.classList.add('is-hidden');
-            }
-        }
-
-        // Add click events for arrows
-        scrollLeftBtn.addEventListener('click', () => {
-            // Scroll by one card width (320px) + gap (2rem = 32px)
-            scrollContainer.scrollLeft -= 352; 
-        });
-        
-        scrollRightBtn.addEventListener('click', () => {
-            scrollContainer.scrollLeft += 352;
-        });
-
-        // Listen for scrolling to check arrows
-        scrollContainer.addEventListener('scroll', checkCardScroll);
-        // Listen for window resize to check arrows
-        window.addEventListener('resize', checkCardScroll);
-
-        // Use a MutationObserver to re-check when cards are loaded
-        const observer = new MutationObserver(() => {
-            checkCardScroll();
-        });
-        
-        // Watch for new child elements (the cards) being added
-        observer.observe(scrollContainer, { childList: true });
-
-        // Initial check
-        setTimeout(checkCardScroll, 1000); // Delay for content to load
-    });
-    // --- END OF NEW CARD SCROLLER BLOCK ---
-
-// ... (rest of your script.js code)

@@ -4,6 +4,7 @@ const router = express.Router();
 const College = require('../models/College');
 const Course = require('../models/Course');
 const City = require('../models/City');
+const Review = require('../models/Review');
 
 // @route   GET api/public/colleges
 // @desc    Get all colleges with filters
@@ -90,10 +91,6 @@ router.get('/colleges/by-city/:cityId', async (req, res) => {
     }
 });
 
-// backend/routes/public.js
-
-// ... (all your existing routes)
-
 // @route   GET api/public/colleges/:id
 // @desc    Get a single college by its ID
 router.get('/colleges/:id', async (req, res) => {
@@ -137,6 +134,43 @@ router.get('/cities/:id', async (req, res) => {
             
         if (!city) return res.status(404).json({ msg: 'City not found' });
         res.json({ city, colleges });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST api/public/reviews
+// @desc    Create a new review
+router.post('/reviews', async (req, res) => {
+    const { name, rating, reviewText } = req.body;
+
+    // Simple validation
+    if (!name || !rating || !reviewText) {
+        return res.status(400).json({ msg: 'Please fill out all fields' });
+    }
+
+    try {
+        const newReview = new Review({
+            name,
+            rating,
+            reviewText
+        });
+
+        const review = await newReview.save();
+        res.json(review); // Send the new review back
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET api/public/reviews
+// @desc    Get all reviews, newest first
+router.get('/reviews', async (req, res) => {
+    try {
+        const reviews = await Review.find().sort({ createdAt: -1 }).limit(10); // Get newest 10
+        res.json(reviews);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

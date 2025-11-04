@@ -894,3 +894,142 @@ section {
         padding: 1rem 1.5rem;
      }
 }
+
+/* ============================ */
+/* --- Student Reviews --- */
+/* ============================ */
+.review-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Form on left, list on right */
+    gap: 3rem;
+    background: var(--light-color);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+}
+
+.review-form-container h3,
+.review-list-container h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Review Form Styles */
+#review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.2);
+}
+
+#review-message {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Star Rating CSS */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* This is the trick */
+    justify-content: flex-end;
+}
+
+.star-rating input[type="radio"] {
+    display: none; /* Hide the radio button */
+}
+
+.star-rating label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* Color stars when hovered */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: var(--primary-light);
+}
+
+/* Color stars when checked */
+.star-rating input[type="radio"]:checked ~ label {
+    color: var(--primary-color);
+}
+
+/* Review List Styles */
+.review-list-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.review-card {
+    background: var(--secondary-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.review-card-header h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.review-card-stars {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.review-card p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* --- Responsive for Reviews --- */
+@media (max-width: 900px) {
+    .review-wrapper {
+        grid-template-columns: 1fr; /* Stack on mobile */
+    }
+}
