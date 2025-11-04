@@ -234,16 +234,123 @@ section {
 .hamburger::after { top: 8px; }
 
 /* ============================ */
+/* --- Course Quick Bar --- */
+/* ============================ */
+.course-quick-bar {
+    background: #1f2937; /* Dark background */
+    color: var(--light-color);
+    padding: 1rem 0;
+    position: fixed;
+    top: 68px; /* Your navbar height */
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* This is the new wrapper for the buttons and list */
+.quick-bar-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.course-quick-bar .container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevents wrapping */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    gap: 2rem;
+    
+    /* FIX: Always align left so scrolling works */
+    justify-content: flex-start; 
+
+    padding: 0 1.5rem; 
+    
+    /* Hides the scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+
+    /* Makes the JS scroll smooth */
+    scroll-behavior: smooth;
+    
+    /* Add padding so buttons don't overlap content */
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.course-quick-bar .container::-webkit-scrollbar {
+    display: none; /* Hides scrollbar for Chrome/Safari */
+}
+
+/* New Arrow Button Styles */
+.scroll-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--light-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, opacity 0.3s ease;
+    opacity: 1; /* Show by default, JS will hide */
+}
+
+.scroll-arrow:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-arrow#scroll-left {
+    left: 10px;
+}
+
+.scroll-arrow#scroll-right {
+    right: 10px;
+}
+
+/* JS will add this class to hide the buttons */
+.scroll-arrow.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.quick-link {
+    white-space: nowrap; 
+    text-decoration: none;
+    color: #e5e7eb;
+    font-size: 1rem; 
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.quick-link:hover {
+    color: var(--light-color);
+    transform: scale(1.05);
+}
+
+.quick-link-loading {
+    white-space: nowrap;
+    font-style: italic;
+    color: #a0aec0;
+}
+
+/* ============================ */
 /* --- Hero Slider --- */
 /* ============================ */
 .hero-slider {
-    margin-top: 1rem ;
     position: relative;
     width: 100%;
     height: 90vh;
     min-height: 500px;
     overflow: hidden;
-    margin-top: 60px; /* Navbar height */
+    /* FIX: Correct margin-top to account for navbar + quick bar */
+    margin-top: 125px; 
 }
 
 .slide-item {
@@ -345,7 +452,6 @@ section {
 /* ============================ */
 /* --- Card Styles (Gradient Hover) --- */
 /* ============================ */
-/* REPLACE your old .card-container style */
 .card-container {
     display: flex;
     flex-wrap: nowrap;
@@ -359,8 +465,6 @@ section {
     /* Hide scrollbar */
     scrollbar-width: none;
     -ms-overflow-style: none;
-
-    
 }
 .card-container::-webkit-scrollbar { display: none; }
 
@@ -413,6 +517,50 @@ section {
     width: 100%;
     text-align: center;
     margin-top: auto; /* Pushes button to the bottom */
+}
+
+/* --- NEW: Card Scroller Wrapper & Buttons --- */
+.card-scroll-wrapper {
+    position: relative;
+    padding: 0 30px; /* Make space for the buttons */
+}
+
+/* We reuse the .scroll-arrow class from the quick bar,
+   but position it differently. */
+.card-scroll-wrapper .scroll-arrow {
+    position: absolute;
+    top: 50%;
+    /* Vertically center and account for button size */
+    transform: translateY(-calc(50% + 1rem)); /* 1rem is half of card-content padding */
+    z-index: 2;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    opacity: 0; /* Hide by default, JS will show them */
+    pointer-events: none; /* Disable by default */
+    transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+/* JS will remove this class when scrolling is possible */
+.card-scroll-wrapper .scroll-arrow:not(.is-hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.card-scroll-wrapper .scroll-arrow:hover {
+    background: var(--light-color);
+    transform: translateY(-calc(50% + 1rem)) scale(1.05);
+}
+
+.card-scroll-wrapper .scroll-arrow.card-scroll-left {
+    left: 10px;
+}
+
+.card-scroll-wrapper .scroll-arrow.card-scroll-right {
+    right: 10px;
 }
 
 /* ============================ */
@@ -479,428 +627,6 @@ section {
     font-weight: 700;
     color: var(--primary-color);
     width: 80px;
-}
-
-/* ============================ */
-/* --- Enhanced Footer --- */
-/* ============================ */
-.footer {
-    background: var(--text-color);
-    color: #a0aec0; /* Lighter text for contrast */
-    padding: 1rem 0 1rem 0;
-    margin-top: 4rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2.5rem;
-    margin-bottom: 3rem;
-}
-
-.footer-col .footer-logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--light-color);
-    text-decoration: none;
-    margin-bottom: 1rem;
-    display: inline-block;
-}
-.footer-col .footer-logo .fa-graduation-cap {
-    margin-right: 0.5rem;
-}
-
-.footer-col p {
-    font-size: 0.95rem;
-    line-height: 1.7;
-}
-
-.footer-col h3 {
-    color: var(--light-color);
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-.footer-col h3::after {
-    content: '';
-    display: block;
-    width: 30px;
-    height: 2px;
-    background: var(--primary-gradient);
-    margin-top: 0.25rem;
-}
-
-.footer-col ul {
-    list-style: none;
-}
-
-.footer-col ul li {
-    margin-bottom: 0.75rem;
-}
-
-.footer-col ul a {
-    color: #a0aec0;
-    text-decoration: none;
-    transition: color 0.3s ease, padding-left 0.3s ease;
-}
-
-.footer-col ul a:hover {
-    color: var(--light-color);
-    padding-left: 5px;
-}
-
-.subscribe-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.subscribe-form input {
-    padding: 0.75rem;
-    border: 1px solid #4a5568;
-    border-radius: 5px;
-    background: #2d3748;
-    color: var(--light-color);
-    outline: none;
-}
-
-.footer-social {
-    display: flex;
-    gap: 1rem;
-}
-
-.footer-social a {
-    color: #a0aec0;
-    font-size: 1.4rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.footer-social a:hover {
-    color: var(--primary-light);
-    transform: translateY(-3px);
-}
-
-.footer-bottom {
-    text-align: center;
-    border-top: 1px solid #4a5568;
-    padding-top: 2rem;
-    font-size: 0.9rem;
-}
-
-/* ============================ */
-/* --- Detail Page Styles --- */
-/* ============================ */
-.detail-page-container {
-    margin-top: 7rem;
-}
-/* ... (All your existing .detail-page styles) ... */
-/* Ensure detail cards also use new vars */
-.detail-info-card {
-    background: var(--light-color);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-.detail-header h1 {
-    color: var(--primary-color);
-}
-.detail-info-card h3 {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--secondary-color);
-}
-.table-link {
-    text-decoration: none;
-    color: var(--primary-color);
-    font-weight: 600;
-}
-.table-link:hover {
-    text-decoration: underline;
-}
-
-.detail-header img{
-    width: 100%;
-    height: 40vh;
-}
-
-/* ============================ */
-/* --- Responsive Styles --- */
-/* ============================ */
-@media (max-width: 900px) {
-    .nav-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--light-color);
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        padding: 1rem 0;
-        box-shadow: 0 10px 10px rgba(0,0,0,0.05);
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-    }
-    .nav-menu.is-active {
-        max-height: 500px; /* Show menu */
-        padding: 1rem 0;
-    }
-    .navbar .nav-links {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    .navbar .nav-links li {
-        width: 100%;
-        text-align: center;
-    }
-    .navbar .nav-links a {
-        display: block;
-        padding: 0.75rem;
-    }
-    .navbar .search-bar {
-        padding: 0 1.5rem;
-    }
-    .navbar .search-bar input {
-        min-width: 0;
-        width: 100%;
-    }
-    .nav-toggle {
-        display: block; /* Show hamburger button */
-    }
-    /* Hamburger animation */
-    .nav-menu.is-active ~ .nav-toggle .hamburger {
-        background: transparent;
-    }
-    .nav-menu.is-active ~ .nav-toggle .hamburger::before {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-    .nav-menu.is-active ~ .nav-toggle .hamburger::after {
-        transform: rotate(-45deg) translate(7px, -7px);
-    }
-}
-
-@media (max-width: 768px) {
-    h2.section-title {
-        font-size: 2rem;
-    }
-    /* Hero */
-    .hero-slider {
-        height: 70vh;
-        margin-top: 58px; /* Adjust for smaller navbar */
-    }
-    .slide-content h1 {
-        font-size: 2.5rem;
-    }
-    .slide-content p {
-        font-size: 1.1rem;
-    }
-    /* Filters */
-    .filters {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-    /* Footer */
-    .footer-content {
-        grid-template-columns: 1fr; /* Stack columns */
-        text-align: center;
-    }
-    .footer-col h3::after {
-        margin: 0.5rem auto 0;
-    }
-    .footer-social {
-        justify-content: center;
-    }
-    /* Detail Pages */
-    .detail-page-container {
-        margin-top: 80px;
-    }
-    .detail-header h1 {
-        font-size: 2.2rem;
-    }
-}
-
-/* ============================ */
-/* --- Course Quick Bar --- */
-/* ============================ */
-.course-quick-bar {
-    background: #1f2937; /* Dark background */
-    color: var(--light-color);
-    padding: 1rem 0;
-    position: fixed;
-    top: 68px; /* Your navbar height */
-    width: 100%;
-    z-index: 999;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* This is the new wrapper for the buttons and list */
-.quick-bar-wrapper {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.course-quick-bar .container {
-    display: flex;
-    flex-wrap: nowrap; /* Prevents wrapping */
-    overflow-x: auto; /* Allows horizontal scrolling */
-    gap: 2rem;
-    
-    /* FIX: Always align left so scrolling works */
-    justify-content: flex-start; 
-
-    padding: 0 1.5rem; 
-    
-    /* Hides the scrollbar */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-
-    /* Makes the JS scroll smooth */
-    scroll-behavior: smooth;
-    
-    /* Add padding so buttons don't overlap content */
-    padding-left: 3rem;
-    padding-right: 3rem;
-}
-
-.course-quick-bar .container::-webkit-scrollbar {
-    display: none; /* Hides scrollbar for Chrome/Safari */
-}
-
-/* New Arrow Button Styles */
-.scroll-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--light-color);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s ease, opacity 0.3s ease;
-    opacity: 1; /* Show by default, JS will hide */
-}
-
-.scroll-arrow:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.scroll-arrow#scroll-left {
-    left: 10px;
-}
-
-.scroll-arrow#scroll-right {
-    right: 10px;
-}
-
-/* JS will add this class to hide the buttons */
-.scroll-arrow.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Responsive fix for mobile: make arrows smaller */
-@media (max-width: 768px) {
-    .scroll-arrow {
-        width: 30px;
-        height: 30px;
-    }
-    .course-quick-bar .container {
-        padding-left: 2.5rem;
-        padding-right: 2.5rem;
-    }
-}
-
-.quick-link {
-    white-space: nowrap; 
-    text-decoration: none;
-    color: #e5e7eb;
-    font-size: 1rem; 
-    font-weight: 500;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.quick-link:hover {
-    color: var(--light-color);
-    transform: scale(1.05);
-}
-
-.quick-link-loading {
-    white-space: nowrap;
-    font-style: italic;
-    color: #a0aec0;
-}
-
-/* --- NEW: Card Scroller Wrapper & Buttons --- */
-.card-scroll-wrapper {
-    position: relative;
-    padding: 0 30px; /* Make space for the buttons */
-}
-
-/* We reuse the .scroll-arrow class from the quick bar,
-   but position it differently. */
-.card-scroll-wrapper .scroll-arrow {
-    position: absolute;
-    top: 50%;
-    /* Vertically center and account for button size */
-    transform: translateY(-calc(50% + 1rem)); /* 1rem is half of card-content padding */
-    z-index: 2;
-    width: 45px;
-    height: 45px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    box-shadow: var(--shadow);
-    opacity: 0; /* Hide by default, JS will show them */
-    pointer-events: none; /* Disable by default */
-    transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
-}
-
-/* JS will remove this class when scrolling is possible */
-.card-scroll-wrapper .scroll-arrow:not(.is-hidden) {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.card-scroll-wrapper .scroll-arrow:hover {
-    background: var(--light-color);
-    transform: translateY(-calc(50% + 1rem)) scale(1.05);
-}
-
-.card-scroll-wrapper .scroll-arrow.card-scroll-left {
-    left: 10px;
-}
-
-.card-scroll-wrapper .scroll-arrow.card-scroll-right {
-    right: 10px;
-}
-
-/* On mobile, just use touch-scrolling. Hide the buttons. */
-@media (max-width: 768px) {
-     .card-scroll-wrapper .scroll-arrow {
-        display: none; 
-     }
-     .card-scroll-wrapper {
-        padding: 0; /* No space needed for buttons */
-     }
-     /* Add padding to the container itself on mobile */
-     .card-container {
-        padding: 1rem 1.5rem;
-     }
 }
 
 /* ============================ */
@@ -1039,18 +765,290 @@ section {
     line-height: 1.6;
 }
 
-/* --- Add this to your responsive section --- */
-/* You can just add this @media block at the end of your CSS file */
+/* ============================ */
+/* --- Enhanced Footer --- */
+/* ============================ */
+.footer {
+    background: var(--text-color);
+    color: #a0aec0; /* Lighter text for contrast */
+    padding: 4rem 0 2rem 0; /* FIX: Restored original padding */
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.footer-col .footer-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--light-color);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+.footer-col .footer-logo .fa-graduation-cap {
+    margin-right: 0.5rem;
+}
+
+.footer-col p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.footer-col h3 {
+    color: var(--light-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+.footer-col h3::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 2px;
+    background: var(--primary-gradient);
+    margin-top: 0.25rem;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-col ul a {
+    color: #a0aec0;
+    text-decoration: none;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.footer-col ul a:hover {
+    color: var(--light-color);
+    padding-left: 5px;
+}
+
+.subscribe-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.subscribe-form input {
+    padding: 0.75rem;
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    background: #2d3748;
+    color: var(--light-color);
+    outline: none;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-social a {
+    color: #a0aec0;
+    font-size: 1.4rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-social a:hover {
+    color: var(--primary-light);
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #4a5568;
+    padding-top: 2rem;
+    font-size: 0.9rem;
+}
+
+/* ============================ */
+/* --- Detail Page Styles --- */
+/* ============================ */
+.detail-page-container {
+    /* FIX: Correct margin-top to account for navbar + quick bar */
+    margin-top: 140px; 
+}
+
+.detail-info-card {
+    background: var(--light-color);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    /* FIX: Removed text-align: center; */
+}
+.detail-header h1 {
+    color: var(--primary-color);
+    text-align: center; /* Moved from detail-info-card */
+}
+.detail-info-card h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+.table-link {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.table-link:hover {
+    text-decoration: underline;
+}
+
+.detail-header img{
+    width: 100%;
+    height: 40vh;
+    object-fit: cover; /* Added to prevent distortion */
+    border-radius: 10px; /* Added for consistency */
+    margin-bottom: 1rem; /* Added spacing */
+}
+
+/* FIX: This rule was added in a previous step, but I'll add it here for completeness */
+.detail-page-container + .footer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+
+/* ============================ */
+/* --- Responsive Styles --- */
+/* ============================ */
 @media (max-width: 900px) {
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--light-color);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 1rem 0;
+        box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    }
+    .nav-menu.is-active {
+        max-height: 500px; /* Show menu */
+        padding: 1rem 0;
+    }
+    .navbar .nav-links {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .navbar .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+    .navbar .nav-links a {
+        display: block;
+        padding: 0.75rem;
+    }
+    .navbar .search-bar {
+        padding: 0 1.5rem;
+    }
+    .navbar .search-bar input {
+        min-width: 0;
+        width: 100%;
+    }
+    .nav-toggle {
+        display: block; /* Show hamburger button */
+    }
+    /* Hamburger animation */
+    .nav-menu.is-active ~ .nav-toggle .hamburger {
+        background: transparent;
+    }
+    .nav-menu.is-active ~ .nav-toggle .hamburger::before {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .nav-menu.is-active ~ .nav-toggle .hamburger::after {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    /* FIX: Merged review responsive rules */
     .review-wrapper {
         grid-template-columns: 1fr; /* Stacks form on top of list */
     }
-
     .review-list-container {
         max-height: 300px; /* Shorter scroll height on mobile */
     }
 }
 
+@media (max-width: 768px) {
+    h2.section-title {
+        font-size: 2rem;
+    }
+    /* Hero */
+    .hero-slider {
+        height: 70vh;
+        /* FIX: Corrected responsive margin-top */
+        margin-top: 125px; 
+    }
+    .slide-content h1 {
+        font-size: 2.5rem;
+    }
+    .slide-content p {
+        font-size: 1.1rem;
+    }
+    /* Filters */
+    .filters {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr; /* Stack columns */
+        text-align: center;
+    }
+    .footer-col h3::after {
+        margin: 0.5rem auto 0;
+    }
+    .footer-social {
+        justify-content: center;
+    }
+    /* Detail Pages */
+    .detail-page-container {
+        /* FIX: Corrected responsive margin-top */
+        margin-top: 140px; 
+    }
+    .detail-header h1 {
+        font-size: 2.2rem;
+    }
 
-
-
+    /* FIX: Merged quick bar responsive rules */
+    .scroll-arrow {
+        width: 30px;
+        height: 30px;
+    }
+    .course-quick-bar .container {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+    
+    /* FIX: Merged card scroller responsive rules */
+    .card-scroll-wrapper .scroll-arrow {
+        display: none; 
+    }
+    .card-scroll-wrapper {
+        padding: 0; /* No space needed for buttons */
+    }
+    .card-container {
+        padding: 1rem 1.5rem;
+    }
+}
